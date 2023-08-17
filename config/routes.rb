@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root 'welcome#index'
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # get '/auth/discord', as: :auth_discord, to: nil
+  match '/auth/discord/callback', to: 'auth#discord', via: %i[get post]
 end

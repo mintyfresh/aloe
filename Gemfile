@@ -7,6 +7,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.2'
 
 gem 'bootsnap', require: false
+gem 'omniauth'
+gem 'omniauth-discord'
+gem 'omniauth-rails_csrf_protection'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 6.0'
 gem 'rails', '~> 7.0.7'
