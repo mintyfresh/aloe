@@ -1,0 +1,9 @@
+<h1>Events</h1>
+<% @events.each do |event| %>
+  <div id="event-<%= event.id %>">
+    <%= link_to(event.name, event) %>
+  </div>
+<% end %>
+<% if @events.none? %>
+  <p>No events yet.</p>
+<% end %>

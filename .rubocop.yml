@@ -56,6 +56,16 @@ Naming/PredicateName:
 Naming/RescuedExceptionsVariableName:
   PreferredName: error
 
+Rails/ActionOrder:
+  ExpectedOrder:
+    - index
+    - show
+    - new
+    - create
+    - edit
+    - update
+    - destroy
+
 Rails/DynamicFindBy:
   Enabled: false
 

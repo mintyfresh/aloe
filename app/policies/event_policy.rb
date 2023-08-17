@@ -23,6 +23,10 @@ class EventPolicy < ApplicationPolicy
     current_user.present? && current_user.admin?
   end
 
+  def permitted_attributes
+    %i[name format description location start_date end_date]
+  end
+
   class Scope < Scope
     def resolve
       scope.all

@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
+  if Rails.env.development?
+    after_action :verify_policy_scoped, only: :index
+    after_action :verify_authorized
+  end
+
   # Returns the current user, or `nil` if none is logged in.
   #
   # @return [User, nil]
