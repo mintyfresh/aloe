@@ -7,6 +7,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.2'
 
 gem 'bootsnap', require: false
+gem 'bootstrap'
+gem 'importmap-rails', '~> 1.2'
 gem 'omniauth'
 gem 'omniauth-discord'
 gem 'omniauth-rails_csrf_protection'
@@ -32,6 +34,7 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'mini_racer'
   gem 'rack-mini-profiler'
   gem 'web-console'
 end
