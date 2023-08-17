@@ -9,3 +9,9 @@ end
 def ENV.enabled?(key)
   (value = self[key]).present? && DISABLED_VALUES.exclude?(value.to_s.downcase)
 end
+
+# @param key [String, Symbol]
+# @return [String]
+def ENV.require(key)
+  self[key].presence or raise KeyError, "Missing ENV[#{key.inspect}]"
+end

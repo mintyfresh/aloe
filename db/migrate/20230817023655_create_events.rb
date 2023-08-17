@@ -8,12 +8,12 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.string     :format
       t.string     :description
       t.string     :location
-      t.date       :start_date
-      t.date       :end_date
+      t.date       :starts_on
+      t.date       :ends_on
       t.timestamps
 
       t.check_constraint <<-SQL.squish
-        "start_date" IS NULL OR "end_date" IS NULL OR "start_date" <= "end_date"
+        "starts_on" IS NULL OR "ends_on" IS NULL OR "starts_on" <= "ends_on"
       SQL
     end
   end

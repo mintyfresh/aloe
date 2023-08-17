@@ -10,8 +10,8 @@
 #  format        :string
 #  description   :string
 #  location      :string
-#  start_date    :date
-#  end_date      :date
+#  starts_on     :date
+#  ends_on       :date
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -39,8 +39,8 @@ class Event < ApplicationRecord
   validates :description, length: { maximum: 5000 }
   validates :location, length: { maximum: 250 }
 
-  validate if: -> { start_date.present? && end_date.present? } do
-    start_date <= end_date or
-      errors.add(:end_date, :on_or_after, restriction: start_date)
+  validate if: -> { starts_on.present? && ends_on.present? } do
+    starts_on <= ends_on or
+      errors.add(:ends_on, :on_or_after, restriction: starts_on)
   end
 end

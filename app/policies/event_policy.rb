@@ -12,19 +12,19 @@ class EventPolicy < ApplicationPolicy
   end
 
   def create?
-    current_user.present? && current_user.admin?
+    admin?
   end
 
   def update?
-    current_user.present? && current_user.admin?
+    admin?
   end
 
   def destroy?
-    current_user.present? && current_user.admin?
+    admin?
   end
 
   def permitted_attributes
-    %i[name format description location start_date end_date]
+    %i[name format description location starts_on ends_on]
   end
 
   class Scope < Scope

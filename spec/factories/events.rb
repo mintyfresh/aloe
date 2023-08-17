@@ -10,8 +10,8 @@
 #  format        :string
 #  description   :string
 #  location      :string
-#  start_date    :date
-#  end_date      :date
+#  starts_on     :date
+#  ends_on       :date
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -31,8 +31,8 @@ FactoryBot.define do
     format { Event::SUPPORTED_FORMATS.sample }
     description { Faker::Lorem.paragraph }
     location { Faker::Address.full_address }
-    start_date { Faker::Date.between(from: 1.year.ago, to: 1.year.from_now) }
-    end_date { start_date + 2.days }
+    starts_on { Faker::Date.between(from: 1.year.ago, to: 1.year.from_now) }
+    ends_on { starts_on + 2.days }
 
     trait :with_registrations do
       transient do

@@ -4,11 +4,11 @@ class RegistrationPolicy < ApplicationPolicy
   alias registration record
 
   def upsert?
-    current_user.present? && registration.user == current_user
+    signed_in? && registration.user == current_user
   end
 
   def destroy?
-    current_user.present? && registration.user == current_user
+    signed_in? && registration.user == current_user
   end
 
   def permitted_attributes

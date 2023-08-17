@@ -10,7 +10,7 @@ class AuthController < ApplicationController
 
     if @user.save
       self.current_user = @user
-      return_path = env['omniauth.origin'] || root_path
+      return_path = request.env['omniauth.origin'] || root_path
 
       redirect_to return_path, notice: 'Successfully logged in.'
     else

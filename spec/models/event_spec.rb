@@ -10,8 +10,8 @@
 #  format        :string
 #  description   :string
 #  location      :string
-#  start_date    :date
-#  end_date      :date
+#  starts_on     :date
+#  ends_on       :date
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -73,18 +73,18 @@ RSpec.describe Event do
   end
 
   it 'is valid without a start date' do
-    event.start_date = nil
+    event.starts_on = nil
     expect(event).to be_valid
   end
 
   it 'is valid without an end date' do
-    event.end_date = nil
+    event.ends_on = nil
     expect(event).to be_valid
   end
 
   it 'is invalid with an end date before the start date' do
-    event.start_date = 1.day.from_now
-    event.end_date   = 1.day.ago
+    event.starts_on = 1.day.from_now
+    event.ends_on   = 1.day.ago
     expect(event).to be_invalid
   end
 end

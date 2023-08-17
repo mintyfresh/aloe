@@ -1,6 +1,27 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
+  module Helpers
+  protected
+
+    # @return [Boolean]
+    def signed_in?
+      current_user.present?
+    end
+
+    # @return [Boolean]
+    def user?
+      signed_in? && current_user.user?
+    end
+
+    # @return [Boolean]
+    def admin?
+      signed_in? && current_user.admin?
+    end
+  end
+
+  include Helpers
+
   # @return [User, nil]
   attr_reader :current_user
   # @return [Object, Class]
@@ -42,6 +63,8 @@ class ApplicationPolicy
   end
 
   class Scope
+    include Helpers
+
     # @param current_user [User, nil]
     # @param scope [ActiveRecord::Relation]
     def initialize(current_user, scope)
@@ -55,7 +78,7 @@ class ApplicationPolicy
       raise NotImplementedError, "You must define #resolve in #{self.class}"
     end
 
-  private
+  protected
 
     # @return [User, nil]
     attr_reader :current_user

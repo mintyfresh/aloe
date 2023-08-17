@@ -29,12 +29,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_024757) do
     t.string "format"
     t.string "description"
     t.string "location"
-    t.date "start_date"
-    t.date "end_date"
+    t.date "starts_on"
+    t.date "ends_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
-    t.check_constraint "start_date IS NULL OR end_date IS NULL OR start_date <= end_date"
+    t.check_constraint "starts_on IS NULL OR ends_on IS NULL OR starts_on <= ends_on"
   end
 
   create_table "registrations", force: :cascade do |t|
