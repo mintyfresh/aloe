@@ -1,1 +1,28 @@
 <h1><%= @event.name %></h1>
+<% if @registrations.present? %>
+  <ul>
+    <% @registrations.each do |registration| %>
+      <li><%= registration.user.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No players have registered for this event yet.</p>
+<% end %>
+
+<% if current_user %>
+  <%= form_with(model: @registration, method: :post, url: [@event, :registration]) do |form| %>
+    <div class="mb-3">
+      <%= form.submit(@registration.new_record? ? 'Register' : 'Update deck list', class: 'btn btn-primary') %>
+    </div>
+    <%= form.fields_for(:deck_list) do |deck_list_form| %>
+      <div class="mb-3">
+        <%= deck_list_form.label(:deck_name) %>
+        <%= deck_list_form.text_field(:deck_name, class: 'form-control') %>
+      </div>
+      <div class="mb-3">
+        <%= deck_list_form.label(:pony_head_url) %>
+        <%= deck_list_form.url_field(:pony_head_url, class: 'form-control') %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

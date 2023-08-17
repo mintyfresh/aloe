@@ -12,6 +12,14 @@ class EventsController < ApplicationController
   # GET /events/:id
   def show
     authorize @event
+
+    if current_user
+      # Ensure a registration with a deck-list record is present for the nested form
+      @registration = @event.registrations.find_or_initialize_by(user: current_user)
+      @registration.deck_list or @registration.build_deck_list
+    end
+
+    @registrations = policy_scope(@event.registrations).preload(:user).order(:created_at, :id)
   end
 
   # GET /events/new
