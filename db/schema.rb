@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_17_024357) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_17_024757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "deck_lists", force: :cascade do |t|
+    t.bigint "registration_id", null: false
+    t.string "deck_name", null: false
+    t.string "pony_head_url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["registration_id"], name: "index_deck_lists_on_registration_id", unique: true
+  end
 
   create_table "events", force: :cascade do |t|
     t.bigint "created_by_id", null: false
@@ -45,6 +54,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_024357) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "deck_lists", "registrations"
   add_foreign_key "events", "users", column: "created_by_id"
   add_foreign_key "registrations", "events"
   add_foreign_key "registrations", "users"
