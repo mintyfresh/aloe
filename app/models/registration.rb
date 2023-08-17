@@ -26,5 +26,5 @@ class Registration < ApplicationRecord
   belongs_to :user, inverse_of: :registrations
 
   has_one :deck_list, dependent: :destroy, inverse_of: :registration
-  accepts_nested_attributes_for :deck_list, reject_if: :all_blank, update_only: true
+  accepts_nested_attributes_for :deck_list, allow_destroy: true, update_only: true
 end

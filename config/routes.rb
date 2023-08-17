@@ -5,8 +5,11 @@ Rails.application.routes.draw do
 
   delete '/auth/sign_out', as: :sign_out, to: 'auth#sign_out'
 
-  # get '/auth/discord', as: :auth_discord, to: nil
+  get '/auth/discord', as: :discord_sign_in, to: nil
   match '/auth/discord/callback', to: 'auth#discord', via: %i[get post]
 
-  resources :events
+  resources :events do
+    post '/registration', to: 'registrations#upsert', as: :registration
+    delete '/registration', to: 'registrations#destroy'
+  end
 end

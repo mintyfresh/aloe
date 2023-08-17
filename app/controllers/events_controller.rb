@@ -3,20 +3,24 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
 
+  # GET /events
   def index
     authorize Event
     @events = policy_scope(Event).order(start_date: :desc, id: :desc)
   end
 
+  # GET /events/:id
   def show
     authorize @event
   end
 
+  # GET /events/new
   def new
     @event = Event.new
     authorize @event
   end
 
+  # POST /events
   def create
     @event = Event.new(permitted_attributes(Event))
     @event.created_by = current_user
@@ -29,10 +33,12 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/:id/edit
   def edit
     authorize @event
   end
 
+  # PATCH /events/:id
   def update
     authorize @event
 
@@ -43,6 +49,7 @@ class EventsController < ApplicationController
     end
   end
 
+  # DELETE /events/:id
   def destroy
     authorize @event
 

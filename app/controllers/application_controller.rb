@@ -3,6 +3,14 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
+  rescue_from Pundit::NotAuthorizedError do |error|
+    if current_user.nil?
+      redirect_to discord_sign_in_path(origin: request.fullpath), alert: 'You must be logged in to do that.'
+    else
+      redirect_to root_path, alert: error.message
+    end
+  end
+
   if Rails.env.development?
     after_action :verify_policy_scoped, only: :index
     after_action :verify_authorized

@@ -3,20 +3,22 @@
 class AuthController < ApplicationController
   before_action :skip_authorization
 
+  # GET /auth/discord/callback
   def discord
     @user = User.find_or_initialize_by(discord_id: auth_hash.uid)
     @user.name = auth_hash.info.name
 
     if @user.save
       self.current_user = @user
-      flash.notice = 'Successfully logged in.'
-    else
-      flash.alert = 'Something went wrong.'
-    end
+      return_path = env['omniauth.origin'] || root_path
 
-    redirect_to root_path
+      redirect_to return_path, notice: 'Successfully logged in.'
+    else
+      redirect_to root_path, alert: 'Something went wrong.'
+    end
   end
 
+  # DELETE /auth/sign_out
   def sign_out
     self.current_user = nil
     flash.notice = 'Successfully logged out.'
