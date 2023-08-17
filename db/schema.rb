@@ -48,10 +48,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_024757) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.bigint "discord_id", null: false
     t.string "name", null: false
     t.string "role", default: "user", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["discord_id"], name: "index_users_on_discord_id", unique: true
   end
 
   add_foreign_key "deck_lists", "registrations"

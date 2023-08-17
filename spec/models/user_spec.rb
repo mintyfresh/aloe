@@ -5,10 +5,15 @@
 # Table name: users
 #
 #  id         :bigint           not null, primary key
+#  discord_id :bigint           not null
 #  name       :string           not null
 #  role       :string           default("user"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_discord_id  (discord_id) UNIQUE
 #
 require 'rails_helper'
 
@@ -17,6 +22,11 @@ RSpec.describe User do
 
   it 'has a valid factory' do
     expect(user).to be_valid
+  end
+
+  it 'is invalid without a discord ID' do
+    user.discord_id = nil
+    expect(user).to be_invalid
   end
 
   it 'is invalid without a name' do
