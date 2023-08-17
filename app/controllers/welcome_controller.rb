@@ -2,6 +2,7 @@
 
 class WelcomeController < ApplicationController
   def index
-    # Nothing to do here.
+    skip_authorization
+    skip_policy_scope
   end
 end
