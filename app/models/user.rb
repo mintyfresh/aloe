@@ -11,6 +11,8 @@
 #  updated_at :datetime         not null
 #
 class User < ApplicationRecord
+  has_many :registrations, dependent: :destroy, inverse_of: :event
+
   enum :role, {
     user:  'user',
     admin: 'admin'

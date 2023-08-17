@@ -32,6 +32,8 @@ class Event < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User'
 
+  has_many :registrations, dependent: :destroy, inverse_of: :event
+
   validates :name, presence: true, length: { maximum: 50 }
   validates :format, inclusion: { in: SUPPORTED_FORMATS, allow_nil: true }
   validates :description, length: { maximum: 5000 }

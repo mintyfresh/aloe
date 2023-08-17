@@ -33,5 +33,15 @@ FactoryBot.define do
     location { Faker::Address.full_address }
     start_date { Faker::Date.between(from: 1.year.ago, to: 1.year.from_now) }
     end_date { start_date + 2.days }
+
+    trait :with_registrations do
+      transient do
+        registrations_count { 3 }
+      end
+
+      after(:build) do |event, e|
+        event.registrations = build_list(:registration, e.registrations_count, event:)
+      end
+    end
   end
 end

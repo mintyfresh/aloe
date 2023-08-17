@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_17_023655) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_17_024357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_023655) do
     t.check_constraint "start_date IS NULL OR end_date IS NULL OR start_date <= end_date"
   end
 
+  create_table "registrations", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id", "user_id"], name: "index_registrations_on_event_id_and_user_id", unique: true
+    t.index ["event_id"], name: "index_registrations_on_event_id"
+    t.index ["user_id"], name: "index_registrations_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "role", default: "user", null: false
@@ -36,4 +46,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_023655) do
   end
 
   add_foreign_key "events", "users", column: "created_by_id"
+  add_foreign_key "registrations", "events"
+  add_foreign_key "registrations", "users"
 end
