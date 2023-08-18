@@ -8,6 +8,7 @@ ruby '3.2.2'
 
 gem 'bootsnap', require: false
 gem 'bootstrap'
+gem 'ed25519'
 gem 'importmap-rails', '~> 1.2'
 gem 'omniauth'
 gem 'omniauth-discord'

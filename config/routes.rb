@@ -13,4 +13,10 @@ Rails.application.routes.draw do
     post '/registration', to: 'registrations#upsert', as: :registration
     delete '/registration', to: 'registrations#destroy'
   end
+
+  namespace :api do
+    namespace :webhooks do
+      post '/discord', to: 'discord#callback'
+    end
+  end
 end
