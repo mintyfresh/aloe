@@ -3,6 +3,19 @@
 class AuthController < ApplicationController
   before_action :skip_authorization
 
+  # GET /sign_in_with_discord
+  def sign_in_with_discord
+    current_user.nil? or redirect_to root_path, alert: 'You are already logged in.'
+  end
+
+  # POST /sign_out
+  def sign_out
+    self.current_user = nil
+    flash.notice = 'Successfully logged out.'
+
+    redirect_to root_path
+  end
+
   # GET /auth/discord/callback
   def discord
     @user = User.find_or_initialize_by(discord_id: auth_hash.uid)
@@ -16,14 +29,6 @@ class AuthController < ApplicationController
     else
       redirect_to root_path, alert: 'Something went wrong.'
     end
-  end
-
-  # DELETE /auth/sign_out
-  def sign_out
-    self.current_user = nil
-    flash.notice = 'Successfully logged out.'
-
-    redirect_to root_path
   end
 
 private

@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError do |error|
     if current_user.nil?
-      redirect_to discord_sign_in_path(origin: request.fullpath), alert: 'You must be logged in to do that.'
+      redirect_to sign_in_with_discord_path(origin: request.fullpath), alert: 'You must be logged in to do that.'
     else
       redirect_to root_path, alert: error.message
     end

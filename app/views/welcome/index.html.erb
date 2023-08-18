@@ -1,6 +1,6 @@
 Welcome, <%= current_user&.name || 'guest' %>
 <div>
   <% if current_user.nil? %>
-    <%= button_to('Sign in', '/auth/discord', method: :post, data: { turbo: false }) %>
+    <%= button_to('Sign in', discord_oauth_path, method: :post, data: { turbo: false }) %>
   <% end %>
 </div>

@@ -1,0 +1,6 @@
+<h1>Sign in with Discord</h1>
+<p>
+  You must sign in with your Discord account to continue.
+</p>
+<%= button_to('Sign in with Discord', discord_oauth_path(origin: params[:origin] || url_for(:back)),
+              class: 'btn btn-primary', method: :post, data: { turbo: false }) %>
