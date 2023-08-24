@@ -1,8 +1,9 @@
 # frozen_string_literal: true
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+
+Discord.client.create_global_command(
+  name:        'install',
+  description: 'Install Aloe, the MLPCCG Discord bot into this server. ' \
+               'Only available to server administrators.',
+  # Restrict command to administrator, disable in DMs.
+  dm_permission: false, default_member_permissions: '1000'
+)

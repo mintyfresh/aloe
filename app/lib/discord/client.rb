@@ -25,5 +25,11 @@ module Discord
     def guild(guild_id)
       @client.get("#{PATH}/guilds/#{guild_id}").body
     end
+
+    # @param attributes [Hash]
+    # @return [Hash]
+    def create_global_command(**attributes)
+      @client.post("#{PATH}/applications/#{ENV.require('DISCORD_CLIENT_ID')}/commands", attributes).body
+    end
   end
 end
