@@ -12,8 +12,10 @@ module Api
 
       def callback
         case params[:type]
-        when 1
-          render json: { type: 1 }
+        when Discord::INTERACTION_REQUEST[:ping]
+          render json: { type: Discord::INTERACTION_RESPONSE[:pong] }
+        when Discord::INTERACTION_REQUEST[:application_command]
+          render json: Discord::Commands.call(params)
         else
           head :ok
         end
