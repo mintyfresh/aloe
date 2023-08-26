@@ -46,7 +46,7 @@ module Discord
       # @return [Hash]
       def footer
         {
-          text: "Created by #{@event.created_by.name}.\nView on the web at #{event_url}"
+          text: "Event created by #{@event.created_by.name}.\nView on the web at #{event_url}"
         }
       end
 
