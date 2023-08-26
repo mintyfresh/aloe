@@ -8,5 +8,7 @@ class CreateDiscordGuilds < ActiveRecord::Migration[7.0]
       t.string :event_channel_id, null: false
       t.timestamps
     end
+
+    add_foreign_key :events, :discord_guilds, column: :guild_id
   end
 end

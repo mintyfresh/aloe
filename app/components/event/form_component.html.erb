@@ -4,6 +4,28 @@
     <%= form.text_field(:name, class: 'form-control', required: true) %>
   </div>
   <div class="mb-3">
+    <%= form.label(:guild_id, class: 'form-label') %>*
+    <%= form.collection_select(:guild_id, guilds, :id, :label, {}, class: 'form-select', disabled: guilds.none?, readonly: @event.persisted?, required: true) %>
+    <span class="form-text">This is the Discord server to which the event and its notifications will be posted.</span>
+    <% if guilds.none? %>
+      <div class="alert alert-warning mt-1">
+        <strong class="alert-heading">No servers found.</strong>
+        Aloe must be installed into a Discord server before events can be created.<br/>
+        Once you have added Aloe to your server, an administrator must run <code>/install</code> to complete the installation.<br/>
+        This will also configure the channel to which events and notifications will be posted.
+      </div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <div class="form-check form-switch">
+      <%= form.check_box(:enforce_guild_membership, class: 'form-check-input', role: 'switch', disabled: guilds.none?) %>
+      <%= form.label(:enforce_guild_membership, class: 'form-check-label') %>
+    </div>
+    <span class="form-text">
+      When enabled, only members of the Discord server are be able to register for the event.
+    </span>
+  </div>
+  <div class="mb-3">
     <%= form.label(:format, class: 'form-label') %>
     <%= form.select(:format, Event::SUPPORTED_FORMATS, {}, class: 'form-select') %>
   </div>
@@ -13,7 +35,7 @@
   </div>
   <div class="mb-3">
     <%= form.label(:location, class: 'form-label') %>
-    <%= form.text_field(:location, class: 'form-control', placeholder: 'e.g. Everfree Northwest 2024') %>
+    <%= form.text_field(:location, class: 'form-control', placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year}") %>
   </div>
   <div class="mb-3">
     <%= form.label(:starts_on, class: 'form-label') %>

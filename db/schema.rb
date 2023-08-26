@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_26_015454) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,7 +33,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_015454) do
     t.index ["installed_by_id"], name: "index_discord_guilds_on_installed_by_id"
   end
 
+  create_table "discord_messages", force: :cascade do |t|
+    t.string "guild_id", null: false
+    t.string "channel_id", null: false
+    t.string "message_id", null: false
+    t.string "content", null: false
+    t.boolean "deleted", default: false, null: false
+    t.datetime "deleted_at", precision: nil
+    t.string "deleted_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
+    t.bigint "guild_id", null: false
     t.bigint "created_by_id", null: false
     t.string "name", null: false
     t.string "format"
@@ -41,9 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_015454) do
     t.string "location"
     t.date "starts_on"
     t.date "ends_on"
+    t.boolean "enforce_guild_membership", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
+    t.index ["guild_id"], name: "index_events_on_guild_id"
     t.check_constraint "starts_on IS NULL OR ends_on IS NULL OR starts_on <= ends_on"
   end
 
@@ -67,6 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_015454) do
   end
 
   add_foreign_key "deck_lists", "registrations"
+  add_foreign_key "events", "discord_guilds", column: "guild_id"
   add_foreign_key "events", "users", column: "created_by_id"
   add_foreign_key "registrations", "events"
   add_foreign_key "registrations", "users"

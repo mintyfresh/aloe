@@ -17,7 +17,7 @@ module Discord
 
       # @return [void]
       def self.install
-        Discord.client.create_global_command(command_attributes)
+        Discord.client.create_global_command(**command_attributes)
       end
 
       # @param interaction [Hash]

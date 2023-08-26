@@ -5,6 +5,7 @@
 # Table name: events
 #
 #  id            :bigint           not null, primary key
+#  guild_id      :bigint           not null
 #  created_by_id :bigint           not null
 #  name          :string           not null
 #  format        :string
@@ -18,10 +19,12 @@
 # Indexes
 #
 #  index_events_on_created_by_id  (created_by_id)
+#  index_events_on_guild_id       (guild_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (guild_id => discord_guilds.id)
 #
 require 'rails_helper'
 
@@ -30,6 +33,11 @@ RSpec.describe Event do
 
   it 'has a valid factory' do
     expect(event).to be_valid
+  end
+
+  it 'is invalid without a discord guild' do
+    event.guild = nil
+    expect(event).to be_invalid
   end
 
   it 'is invalid without a name' do

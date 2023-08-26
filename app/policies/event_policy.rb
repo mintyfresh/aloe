@@ -24,7 +24,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[name format description location starts_on ends_on]
+    %i[name format description location starts_on ends_on enforce_guild_membership]
+  end
+
+  def permitted_attributes_for_create
+    permitted_attributes + %i[guild_id]
   end
 
   class Scope < Scope

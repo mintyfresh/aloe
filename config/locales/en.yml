@@ -1,6 +1,11 @@
 ---
 en:
   activerecord:
+    attributes:
+      event:
+        enforce_guild_membership: Enforce server membership
+        guild: Discord server
+        guild_id: Discord server
     errors:
       models:
         discord/guild:

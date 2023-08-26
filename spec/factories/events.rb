@@ -5,6 +5,7 @@
 # Table name: events
 #
 #  id            :bigint           not null, primary key
+#  guild_id      :bigint           not null
 #  created_by_id :bigint           not null
 #  name          :string           not null
 #  format        :string
@@ -18,13 +19,16 @@
 # Indexes
 #
 #  index_events_on_created_by_id  (created_by_id)
+#  index_events_on_guild_id       (guild_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (guild_id => discord_guilds.id)
 #
 FactoryBot.define do
   factory :event do
+    guild factory: :discord_guild
     created_by factory: :user
 
     name { Faker::Book.title }

@@ -37,5 +37,14 @@ module Discord
         @client.post("#{PATH}/applications/#{ENV.require('DISCORD_CLIENT_ID')}/commands", attributes).body
       end
     end
+
+    # @param channel_id [String]
+    # @param attributes [Hash]
+    # @return [Hash]
+    def create_message(channel_id:, **attributes)
+      Rails.benchmark("#{self.class.name}##{__method__}") do
+        @client.post("#{PATH}/channels/#{channel_id}/messages", attributes).body
+      end
+    end
   end
 end

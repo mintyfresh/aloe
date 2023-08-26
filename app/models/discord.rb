@@ -20,6 +20,19 @@ module Discord
     @client ||= Client.new
   end
 
+  # @param guild [Guild]
+  # @param attributes [Hash]
+  # @return [Message]
+  def self.send_message(guild:, **attributes)
+    message = client.create_message(channel_id: guild.event_channel_id, **attributes)
+
+    guild.messages.create!(
+      channel_id: message['channel_id'],
+      message_id: message['id'],
+      content:    message['content']
+    )
+  end
+
   # @return [String]
   def self.table_name_prefix
     'discord_'
