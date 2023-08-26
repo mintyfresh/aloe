@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: discord_messages
@@ -16,5 +18,34 @@
 require 'rails_helper'
 
 RSpec.describe Discord::Message, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:message) { build(:discord_message) }
+
+  it 'has a valid factory' do
+    expect(message).to be_valid
+  end
+
+  it 'is invalid without a guild' do
+    message.guild = nil
+    expect(message).to be_invalid
+  end
+
+  it 'is invalid without a channel' do
+    message.channel_id = nil
+    expect(message).to be_invalid
+  end
+
+  it 'is invalid without a message' do
+    message.message_id = nil
+    expect(message).to be_invalid
+  end
+
+  it 'is invalid without content' do
+    message.content = nil
+    expect(message).to be_invalid
+  end
+
+  it 'is invalid without a deleted flag' do
+    message.deleted = nil
+    expect(message).to be_invalid
+  end
 end
