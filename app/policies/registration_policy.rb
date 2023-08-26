@@ -3,6 +3,10 @@
 class RegistrationPolicy < ApplicationPolicy
   alias registration record
 
+  def show?
+    admin? || registration.user == current_user
+  end
+
   def upsert?
     signed_in? && registration.user == current_user
   end
@@ -17,7 +21,13 @@ class RegistrationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.all
+      if admin?
+        scope.all
+      elsif signed_in?
+        scope.where(user: current_user)
+      else
+        scope.none
+      end
     end
   end
 end

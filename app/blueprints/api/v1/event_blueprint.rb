@@ -24,13 +24,20 @@ module Api
         api_v1_guild_url(event.guild_id, host: options[:host])
       end
 
-      field :meta do |event, options|
-        { self: api_v1_event_url(event, host: options[:host]) }
-      end
-
       view :detail do
         association :created_by, blueprint: UserBlueprint
         association :guild, blueprint: GuildBlueprint
+
+        association :registrations, blueprint: RegistrationBlueprint, view: :in_event do |event, options|
+          registrations = event.registrations.preload(:deck_list, :user)
+          registrations = registrations.order(created_at: :asc, id: :asc)
+
+          Pundit.policy_scope(options[:current_user], registrations)
+        end
+      end
+
+      field :meta do |event, options|
+        { self: api_v1_event_url(event, host: options[:host]) }
       end
     end
   end

@@ -53,7 +53,7 @@ module Api
       # @param object [Object]
       # @return [Hash]
       def render_blueprint(blueprint, object, **)
-        blueprint.render_as_json(object, **, host: request.host_with_port)
+        blueprint.render_as_json(object, **, current_user:, host: request.host_with_port)
       end
 
       # @return [void]
