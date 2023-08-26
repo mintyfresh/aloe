@@ -15,6 +15,12 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    namespace :v1, constraints: { format: :json }, defaults: { format: :json } do
+      resources :events, only: %i[index show create update destroy]
+      resources :guilds, only: %i[index show]
+      resources :users, only: %i[index show]
+    end
+
     namespace :webhooks do
       post '/discord', to: 'discord#callback'
     end
