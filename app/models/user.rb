@@ -21,6 +21,8 @@ class User < ApplicationRecord
     admin: 'admin'
   }
 
+  has_many :api_keys, dependent: :destroy, inverse_of: :user
+
   has_many :created_events, class_name: 'Event', dependent: :restrict_with_error,
                             foreign_key: :created_by_id, inverse_of: :created_by
 

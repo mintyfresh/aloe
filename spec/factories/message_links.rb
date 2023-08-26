@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: linked_messages
+# Table name: message_links
 #
 #  id            :bigint           not null, primary key
 #  message_id    :bigint           not null
@@ -12,9 +12,9 @@
 #
 # Indexes
 #
-#  index_linked_messages_on_linkable           (linkable_type,linkable_id)
-#  index_linked_messages_on_linkable_and_name  (linkable_type,linkable_id,name) UNIQUE
-#  index_linked_messages_on_message_id         (message_id)
+#  index_message_links_on_linkable           (linkable_type,linkable_id)
+#  index_message_links_on_linkable_and_name  (linkable_type,linkable_id,name) UNIQUE
+#  index_message_links_on_message_id         (message_id)
 #
 # Foreign Keys
 #
