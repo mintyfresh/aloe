@@ -2,7 +2,7 @@
 
 module Discord
   module Views
-    class Event
+    class Event < Base
       # @param event [::Event]
       # @param host [String]
       def initialize(event:, host:)
@@ -11,7 +11,7 @@ module Discord
       end
 
       # @return [Hash]
-      def call
+      def render
         {
           embeds:     [embed],
           components: components
@@ -37,8 +37,12 @@ module Discord
         fields << { name: 'Format', value: @event.format } if @event.format
         fields << { name: 'Location', value: @event.location } if @event.location.present?
 
-        fields << { name: 'Start Date', value: I18n.l(@event.starts_on), inline: @event.ends_on? } if @event.starts_on
-        fields << { name: 'End Date',   value: I18n.l(@event.ends_on) } if @event.ends_on
+        fields << { name: 'Start Date', value: I18n.l(@event.starts_on) } if @event.starts_on
+        fields << { name: 'End Date',   value: I18n.l(@event.ends_on)   } if @event.ends_on
+
+        if (count = @event.registrations.count).positive?
+          fields << { name: 'Registered', value: "#{count} #{'player'.pluralize(count)}" }
+        end
 
         fields
       end
@@ -64,7 +68,7 @@ module Discord
 
       # @return [Hash]
       def register_button
-        Discord::Components::EventRegisterButton.new(@event).render
+        Discord::Components::EventRegisterButton.render(@event)
       end
 
       # @return [Hash]

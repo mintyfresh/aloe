@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Discord
-  module Components
+  module Views
     class Base
       # @return [Hash]
       def self.render(...)
