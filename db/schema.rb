@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_015454) do
   create_table "discord_guilds", force: :cascade do |t|
     t.string "guild_id", null: false
     t.string "installed_by_id", null: false
-    t.string "name", null: false
+    t.string "event_channel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["guild_id"], name: "index_discord_guilds_on_guild_id", unique: true

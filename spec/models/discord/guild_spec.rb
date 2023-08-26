@@ -4,12 +4,12 @@
 #
 # Table name: discord_guilds
 #
-#  id              :bigint           not null, primary key
-#  guild_id        :string           not null
-#  installed_by_id :string           not null
-#  name            :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id               :bigint           not null, primary key
+#  guild_id         :string           not null
+#  installed_by_id  :string           not null
+#  event_channel_id :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 # Indexes
 #
@@ -35,8 +35,8 @@ RSpec.describe Discord::Guild do
     expect(guild).to be_invalid
   end
 
-  it 'is invalid without a name' do
-    guild.name = nil
+  it 'is invalid without an event channel ID' do
+    guild.event_channel_id = nil
     expect(guild).to be_invalid
   end
 end

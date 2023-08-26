@@ -4,12 +4,12 @@
 #
 # Table name: discord_guilds
 #
-#  id              :bigint           not null, primary key
-#  guild_id        :string           not null
-#  installed_by_id :string           not null
-#  name            :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id               :bigint           not null, primary key
+#  guild_id         :string           not null
+#  installed_by_id  :string           not null
+#  event_channel_id :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 # Indexes
 #
@@ -20,6 +20,6 @@ FactoryBot.define do
   factory :discord_guild, class: 'Discord::Guild' do
     guild_id { Faker::Alphanumeric.alphanumeric(number: 18) }
     installed_by_id { Faker::Alphanumeric.alphanumeric(number: 18) }
-    name { Faker::Games::Pokemon.name }
+    event_channel_id { Faker::Alphanumeric.alphanumeric(number: 18) }
   end
 end

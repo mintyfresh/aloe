@@ -4,12 +4,12 @@
 #
 # Table name: discord_guilds
 #
-#  id              :bigint           not null, primary key
-#  guild_id        :string           not null
-#  installed_by_id :string           not null
-#  name            :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id               :bigint           not null, primary key
+#  guild_id         :string           not null
+#  installed_by_id  :string           not null
+#  event_channel_id :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 # Indexes
 #
@@ -22,6 +22,6 @@ module Discord
 
     validates :guild_id, presence: true
     validates :installed_by_id, presence: true
-    validates :name, presence: true
+    validates :event_channel_id, presence: true
   end
 end

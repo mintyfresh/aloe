@@ -26,11 +26,11 @@ module Discord
         guild = upsert_guild_record(interaction)
 
         if guild.errors.any?
-          content = I18n.t('errors', scope: I18N_PATH, errors: guild.errors.full_messages.join(', '))
+          content = I18n.t('failure', scope: I18N_PATH, errors: guild.errors.full_messages.join(', '))
         elsif guild.previously_new_record?
-          content = I18n.t('success', scope: I18N_PATH)
+          content = I18n.t('created', scope: I18N_PATH)
         else
-          content = I18n.t('already_installed', scope: I18N_PATH)
+          content = I18n.t('updated', scope: I18N_PATH)
         end
 
         respond_with_message(content:)
@@ -41,16 +41,15 @@ module Discord
       private_class_method def self.upsert_guild_record(interaction)
         retries ||= 0
 
-        Discord::Guild.find_or_create_by(guild_id: interaction['guild_id']) do |guild|
-          guild.installed_by_id = interaction.dig('member', 'user', 'id')
-          guild.name = Discord.client.guild(guild.guild_id)['name']
-        end
+        guild = Discord::Guild.find_or_initialize_by(guild_id: interaction['guild_id'])
+        guild.installed_by_id ||= interaction.dig('member', 'user', 'id')
+        guild.event_channel_id  = interaction.dig('channel', 'id')
+
+        guild.tap(&:save!)
       rescue ActiveRecord::RecordNotUnique
         retry if (retries += 1) < 3
 
-        Discord::Guild.new.tap do |guild|
-          guild.errors.add(:base, :unable_to_install)
-        end
+        Discord::Guild.build_with_error(:base, :unable_to_install)
       end
     end
   end

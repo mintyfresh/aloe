@@ -5,7 +5,7 @@ class CreateDiscordGuilds < ActiveRecord::Migration[7.0]
     create_table :discord_guilds do |t|
       t.string :guild_id, null: false, index: { unique: true }
       t.string :installed_by_id, null: false, index: true
-      t.string :name, null: false
+      t.string :event_channel_id, null: false
       t.timestamps
     end
   end
