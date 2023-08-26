@@ -15,13 +15,16 @@
 #
 #  index_users_on_discord_id  (discord_id) UNIQUE
 #
-class User < ApplicationRecord
-  has_many :registrations, dependent: :destroy, inverse_of: :user
-
+class User < ApplicationRecord  
   enum :role, {
     user:  'user',
     admin: 'admin'
   }
+
+  has_many :created_events, class_name: 'Event', dependent: :restrict_with_error,
+                            foreign_key: :created_by_id, inverse_of: :created_by
+
+  has_many :registrations, dependent: :destroy, inverse_of: :user
 
   validates :discord_id, presence: true
   validates :name, presence: true, length: { minimum: 3, maximum: 30 }

@@ -41,7 +41,7 @@ class Event < ApplicationRecord
   ].freeze
 
   belongs_to :guild, class_name: 'Discord::Guild', inverse_of: :events
-  belongs_to :created_by, class_name: 'User'
+  belongs_to :created_by, class_name: 'User', inverse_of: :created_events
 
   has_many :registrations, dependent: :destroy, inverse_of: :event
 
