@@ -16,6 +16,8 @@ module Api
           render json: { type: Discord::INTERACTION_RESPONSE[:pong] }
         when Discord::INTERACTION_REQUEST[:application_command]
           render json: Discord::Commands.call(params)
+        when Discord::INTERACTION_REQUEST[:message_component]
+          render json: Discord::Components.respond_to_interaction(params)
         else
           head :no_content
         end
