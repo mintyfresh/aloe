@@ -18,6 +18,8 @@ module Api
           render json: Discord::Commands.call(params)
         when Discord::INTERACTION_REQUEST[:message_component]
           render json: Discord::Components.respond_to_interaction(params)
+        when Discord::INTERACTION_REQUEST[:modal_submission]
+          render json: Discord::Components.respond_to_interaction(params)
         else
           head :no_content
         end

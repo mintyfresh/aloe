@@ -27,5 +27,25 @@ module Discord
     validates :message_id, presence: true
     validates :content, presence: true
     validates :deleted, inclusion: { in: [true, false] }
+
+    # @param data [Hash]
+    # @return [Integer] the ID of the message
+    def self.import!(data)
+      result = upsert_all(
+        {
+          guild_id:   data['guild_id'],
+          channel_id: data['channel_id'],
+          message_id: data['id'],
+          content:    data['content'],
+          created_at: data['timestamp'],
+          updated_at: Time.current
+        },
+        returning:   :id, record_timestamps: false,
+        unique_by:   :index_discord_messages_on_message_id,
+        update_only: %i[content created_at updated_at]
+      )
+
+      result.rows.first.first
+    end
   end
 end

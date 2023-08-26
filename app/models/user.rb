@@ -31,4 +31,18 @@ class User < ApplicationRecord
   validates :discord_id, presence: true
   validates :name, presence: true, length: { minimum: 3, maximum: 30 }
   validates :role, presence: true
+
+  # @param discord_id [Integer]
+  # @param name [String]
+  # @return [User]
+  def self.create_from_discord!(discord_id:, name:)
+    transaction(requires_new: true) do
+      user = find_or_initialize_by(discord_id:)
+      user.name = name
+      user.tap(&:save!)
+    end
+  rescue ActiveRecord::RecordNotUnique => error
+    retry if error.message.include?('index_users_on_discord_id')
+    raise error
+  end
 end

@@ -4,7 +4,8 @@ module Discord
   INTERACTION_REQUEST = {
     ping:                1,
     application_command: 2,
-    message_component:   3
+    message_component:   3,
+    modal_submission:    5
   }.freeze
 
   INTERACTION_RESPONSE = {

@@ -3,47 +3,8 @@
 module Discord
   module Components
     class EventRegisterButton < Button
-      on_button_interaction do |_, event_id|
-        event = ::Event.find(event_id)
-
-        title = "Register for #{event.name}"
-        title = 'Register for Event' if title.length > 45
-
-        {
-          type: 9,
-          data: {
-            title:,
-            custom_id:  'cool_modal',
-            components: [
-              {
-                type:       1,
-                components: [
-                  {
-                    type:        4,
-                    custom_id:   'pony_head_url',
-                    label:       'Deck List URL (optional)',
-                    style:       1,
-                    placeholder: 'https://ponyhead.com/deckbuilder?v1code=...',
-                    required:    false
-                  }
-                ]
-              },
-              {
-                type:       1,
-                components: [
-                  {
-                    type:        4,
-                    custom_id:   'deck_name',
-                    label:       'Deck Name (optional)',
-                    style:       1,
-                    placeholder: 'My Cool Deck',
-                    required:    false
-                  }
-                ]
-              }
-            ]
-          }
-        }
+      on_button_interaction do |interaction, event_id|
+        EventRegisterModal.new(::Event.find(event_id), interaction).render
       end
 
       # @param event [::Event]

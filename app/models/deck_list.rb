@@ -22,7 +22,7 @@
 class DeckList < ApplicationRecord
   belongs_to :registration, inverse_of: :deck_list
 
-  validates :deck_name, presence: true
+  validates :deck_name, presence: true, length: { maximum: 255 }
   validates :pony_head_url, presence: true, uri: { scheme: %w[http https], host: 'ponyhead.com', path: '/deckbuilder' }
 
   validate if: -> { pony_head_url_changed? && errors.none? } do

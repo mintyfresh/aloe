@@ -6,6 +6,8 @@ en:
         enforce_guild_membership: Enforce server membership
         guild: Discord server
         guild_id: Discord server
+      registration/deck_list:
+        pony_head_url: Pony Head URL
     errors:
       models:
         discord/guild:
@@ -16,3 +18,10 @@ en:
         created: Aloe was successfully installed in this server.
         failure: "Errors: %{errors}"
         updated: Aloe will now post events to this channel.
+
+  errors:
+    messages:
+      invalid_host: has an invalid host (%{host} is supported)
+      invalid_path: has an invalid path (%{path} is supported)
+      invalid_scheme: has an invalid scheme (%{scheme} is supported)
+      invalid_uri: is not a valid URI
