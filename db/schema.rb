@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "citext"
   enable_extension "plpgsql"
 
   create_table "deck_lists", force: :cascade do |t|
@@ -48,7 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
   create_table "events", force: :cascade do |t|
     t.bigint "guild_id", null: false
     t.bigint "created_by_id", null: false
-    t.string "name", null: false
+    t.citext "name", null: false
+    t.string "slug", null: false
     t.string "format"
     t.string "description"
     t.string "location"
@@ -59,6 +61,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
     t.index ["guild_id"], name: "index_events_on_guild_id"
+    t.index ["name"], name: "index_events_on_name", unique: true
+    t.index ["slug"], name: "index_events_on_slug", unique: true
     t.check_constraint "starts_on IS NULL OR ends_on IS NULL OR starts_on <= ends_on"
   end
 

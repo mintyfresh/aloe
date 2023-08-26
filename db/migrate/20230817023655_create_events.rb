@@ -2,10 +2,13 @@
 
 class CreateEvents < ActiveRecord::Migration[7.0]
   def change
+    enable_extension 'citext'
+
     create_table :events do |t|
       t.belongs_to :guild, null: false, foreign_key: false
       t.belongs_to :created_by, null: false, foreign_key: { to_table: :users }
-      t.string     :name, null: false
+      t.citext     :name, null: false, index: { unique: true }
+      t.string     :slug, null: false, index: { unique: true }
       t.string     :format
       t.string     :description
       t.string     :location

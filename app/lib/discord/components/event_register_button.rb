@@ -6,10 +6,13 @@ module Discord
       on_button_interaction do |_, event_id|
         event = ::Event.find(event_id)
 
+        title = "Register for #{event.name}"
+        title = 'Register for Event' if title.length > 45
+
         {
           type: 9,
           data: {
-            title:      "Register for #{event.name}",
+            title:,
             custom_id:  'cool_modal',
             components: [
               {

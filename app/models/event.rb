@@ -4,22 +4,26 @@
 #
 # Table name: events
 #
-#  id            :bigint           not null, primary key
-#  guild_id      :bigint           not null
-#  created_by_id :bigint           not null
-#  name          :string           not null
-#  format        :string
-#  description   :string
-#  location      :string
-#  starts_on     :date
-#  ends_on       :date
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id                       :bigint           not null, primary key
+#  guild_id                 :bigint           not null
+#  created_by_id            :bigint           not null
+#  name                     :citext           not null
+#  slug                     :string           not null
+#  format                   :string
+#  description              :string
+#  location                 :string
+#  starts_on                :date
+#  ends_on                  :date
+#  enforce_guild_membership :boolean          default(TRUE), not null
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
 #
 # Indexes
 #
 #  index_events_on_created_by_id  (created_by_id)
 #  index_events_on_guild_id       (guild_id)
+#  index_events_on_name           (name) UNIQUE
+#  index_events_on_slug           (slug) UNIQUE
 #
 # Foreign Keys
 #
@@ -27,6 +31,8 @@
 #  fk_rails_...  (guild_id => discord_guilds.id)
 #
 class Event < ApplicationRecord
+  include Sluggable
+
   SUPPORTED_FORMATS = %w[
     core
     adventure
@@ -38,6 +44,10 @@ class Event < ApplicationRecord
 
   has_many :registrations, dependent: :destroy, inverse_of: :event
 
+  # Apply errors from both unique indices to the name attribute.
+  has_unique_attribute :name, index: 'index_events_on_name'
+  has_unique_attribute :name, index: 'index_events_on_slug'
+
   validates :name, presence: true, length: { maximum: 50 }
   validates :format, inclusion: { in: SUPPORTED_FORMATS, allow_nil: true }
   validates :description, length: { maximum: 5000 }
@@ -48,4 +58,6 @@ class Event < ApplicationRecord
     starts_on <= ends_on or
       errors.add(:ends_on, :on_or_after, restriction: starts_on)
   end
+
+  sluggifies :name
 end
