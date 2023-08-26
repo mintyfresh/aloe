@@ -4,7 +4,10 @@ module Discord
   module Commands
     # @return [Array<Module>]
     def self.all
-      @all ||= constants(false).map { |name| const_get(name) }.freeze
+      @all ||= constants(false)
+        .map { |name| const_get(name) }
+        .select { |mod| mod.try(:command?) }
+        .freeze
     end
 
     # @param name [String]

@@ -17,7 +17,7 @@ module Api
         when Discord::INTERACTION_REQUEST[:application_command]
           render json: Discord::Commands.call(params)
         else
-          head :ok
+          head :no_content
         end
       end
 

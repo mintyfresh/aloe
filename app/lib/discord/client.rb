@@ -17,19 +17,25 @@ module Discord
 
     # @return [Hash]
     def me
-      @client.get("#{PATH}/users/@me").body
+      Rails.benchmark("#{self.class.name}##{__method__}") do
+        @client.get("#{PATH}/users/@me").body
+      end
     end
 
     # @param guild_id [String]
     # @return [Hash]
     def guild(guild_id)
-      @client.get("#{PATH}/guilds/#{guild_id}").body
+      Rails.benchmark("#{self.class.name}##{__method__}") do
+        @client.get("#{PATH}/guilds/#{guild_id}").body
+      end
     end
 
     # @param attributes [Hash]
     # @return [Hash]
     def create_global_command(**attributes)
-      @client.post("#{PATH}/applications/#{ENV.require('DISCORD_CLIENT_ID')}/commands", attributes).body
+      Rails.benchmark("#{self.class.name}##{__method__}") do
+        @client.post("#{PATH}/applications/#{ENV.require('DISCORD_CLIENT_ID')}/commands", attributes).body
+      end
     end
   end
 end

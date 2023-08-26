@@ -19,4 +19,9 @@ module Discord
   def self.client
     @client ||= Client.new
   end
+
+  # @return [String]
+  def self.table_name_prefix
+    'discord_'
+  end
 end

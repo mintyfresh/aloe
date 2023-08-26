@@ -3,6 +3,19 @@
 module Discord
   module Commands
     module DSL
+      # @param base [Module]
+      # @return [void]
+      def self.extended(base)
+        super(base).tap do
+          base.define_singleton_method(:command?) { true }
+        end
+      end
+
+      # @return [Boolean]
+      def command?
+        false
+      end
+
       # @overload command_name()
       #   @return [String, nil]
       # @overload command_name(name)
@@ -61,6 +74,14 @@ module Discord
           name: command_name, description:,
           dm_permission:, default_member_permissions:
         }.compact
+      end
+
+    protected
+
+      # @param data [Hash]
+      # @return [Hash]
+      def respond_with_message(**data)
+        { type: Discord::INTERACTION_RESPONSE[:channel_message], data: }
       end
     end
   end
