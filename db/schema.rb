@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_26_054459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -66,6 +66,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
     t.check_constraint "starts_on IS NULL OR ends_on IS NULL OR starts_on <= ends_on"
   end
 
+  create_table "message_links", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.string "linkable_type", null: false
+    t.bigint "linkable_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["linkable_type", "linkable_id", "name"], name: "index_message_links_on_linkable_and_name", unique: true
+    t.index ["linkable_type", "linkable_id"], name: "index_message_links_on_linkable"
+    t.index ["message_id"], name: "index_message_links_on_message_id"
+  end
+
   create_table "registrations", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.bigint "user_id", null: false
@@ -88,6 +100,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_025549) do
   add_foreign_key "deck_lists", "registrations"
   add_foreign_key "events", "discord_guilds", column: "guild_id"
   add_foreign_key "events", "users", column: "created_by_id"
+  add_foreign_key "message_links", "discord_messages", column: "message_id"
   add_foreign_key "registrations", "events"
   add_foreign_key "registrations", "users"
 end

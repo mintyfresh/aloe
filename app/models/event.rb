@@ -31,6 +31,7 @@
 #  fk_rails_...  (guild_id => discord_guilds.id)
 #
 class Event < ApplicationRecord
+  include MessageLinkable
   include Sluggable
 
   SUPPORTED_FORMATS = %w[
@@ -43,6 +44,8 @@ class Event < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
 
   has_many :registrations, dependent: :destroy, inverse_of: :event
+
+  has_linked_message :announcement
 
   # Apply errors from both unique indices to the name attribute.
   has_unique_attribute :name, index: 'index_events_on_name'
