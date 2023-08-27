@@ -22,7 +22,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (user_id => users.id)  
+#  fk_rails_...  (user_id => users.id)
 #
 class ApiKey < ApplicationRecord
   belongs_to :user, inverse_of: :api_keys
