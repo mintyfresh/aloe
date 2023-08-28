@@ -15,6 +15,7 @@
 #  starts_on                :date
 #  ends_on                  :date
 #  enforce_guild_membership :boolean          default(TRUE), not null
+#  registrations_count      :integer          default(0), not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #
@@ -98,5 +99,9 @@ RSpec.describe Event do
     event.starts_on = 1.day.from_now
     event.ends_on   = 1.day.ago
     expect(event).to be_invalid
+  end
+
+  it 'publishes a create event when created' do
+    expect { event.save! }.to have_published(Event::Create).with(event:)
   end
 end

@@ -2,7 +2,7 @@
 
 module Discord
   class Client
-    HOST = 'https://discord.com/'
+    HOST = 'https://discord.com'
     PATH = '/api/v10'
 
     def initialize

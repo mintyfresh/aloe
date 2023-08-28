@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 module Discord
-  module Views
-    class Event < Base
+  module Templates
+    class EventAnnouncement < Base
       # @param event [::Event]
       # @param host [String]
       def initialize(event:, host:)
+        super()
+
         @event = event
         @host  = host
       end
@@ -14,7 +16,7 @@ module Discord
       def render
         {
           embeds:     [embed],
-          components: components
+          components:
         }
       end
 

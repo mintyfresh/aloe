@@ -5,9 +5,9 @@
 # Table name: discord_guilds
 #
 #  id               :bigint           not null, primary key
-#  guild_id         :string           not null
-#  installed_by_id  :string           not null
-#  event_channel_id :string           not null
+#  guild_id         :bigint           not null
+#  installed_by_id  :bigint           not null
+#  event_channel_id :bigint           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -18,8 +18,8 @@
 #
 FactoryBot.define do
   factory :discord_guild, class: 'Discord::Guild' do
-    guild_id { Faker::Alphanumeric.alphanumeric(number: 18) }
-    installed_by_id { Faker::Alphanumeric.alphanumeric(number: 18) }
-    event_channel_id { Faker::Alphanumeric.alphanumeric(number: 18) }
+    guild_id { Faker::Number.number(digits: 18) }
+    installed_by_id { Faker::Number.number(digits: 18) }
+    event_channel_id { Faker::Number.number(digits: 18) }
   end
 end

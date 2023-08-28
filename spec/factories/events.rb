@@ -15,6 +15,7 @@
 #  starts_on                :date
 #  ends_on                  :date
 #  enforce_guild_membership :boolean          default(TRUE), not null
+#  registrations_count      :integer          default(0), not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #

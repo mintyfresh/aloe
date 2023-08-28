@@ -40,9 +40,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
   end
 
   create_table "discord_guilds", force: :cascade do |t|
-    t.string "guild_id", null: false
-    t.string "installed_by_id", null: false
-    t.string "event_channel_id", null: false
+    t.bigint "guild_id", null: false
+    t.bigint "installed_by_id", null: false
+    t.bigint "event_channel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["guild_id"], name: "index_discord_guilds_on_guild_id", unique: true
@@ -50,15 +50,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
   end
 
   create_table "discord_messages", force: :cascade do |t|
-    t.string "guild_id", null: false
-    t.string "channel_id", null: false
-    t.string "message_id", null: false
-    t.string "content", null: false
+    t.bigint "message_id", null: false
+    t.bigint "channel_id", null: false
+    t.bigint "guild_id", null: false
+    t.string "content"
+    t.datetime "posted_at", precision: nil
+    t.datetime "edited_at", precision: nil
     t.boolean "deleted", default: false, null: false
     t.datetime "deleted_at", precision: nil
-    t.string "deleted_by_id"
+    t.bigint "deleted_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_discord_messages_on_message_id", unique: true
   end
 
   create_table "events", force: :cascade do |t|
@@ -72,6 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
     t.date "starts_on"
     t.date "ends_on"
     t.boolean "enforce_guild_membership", default: true, null: false
+    t.integer "registrations_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
@@ -96,6 +100,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
   create_table "registrations", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.bigint "user_id", null: false
+    t.boolean "dropped", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id", "user_id"], name: "index_registrations_on_event_id_and_user_id", unique: true

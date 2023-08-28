@@ -11,7 +11,13 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 
 require 'rspec/rails'
 require 'pundit/rspec'
-# Add additional requires below this line. Rails is not loaded until this point!
+require 'webmock/rspec'
+require 'moonfire/rspec'
+
+# Prevent message delivery to subscribers during tests.
+Rails.application.config.moonfire.message_bus = Moonfire::RSpec::TestMessageBus.new
+
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |file| require file }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -24,6 +30,7 @@ end
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
+  config.include DiscordWebMocks
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -49,4 +56,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:each) do
+    stub_request(:any, Discord::Client::HOST)
+  end
 end

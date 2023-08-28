@@ -15,6 +15,7 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.date       :starts_on
       t.date       :ends_on
       t.boolean    :enforce_guild_membership, null: false, default: true
+      t.integer    :registrations_count, null: false, default: 0
       t.timestamps
 
       t.check_constraint <<-SQL.squish

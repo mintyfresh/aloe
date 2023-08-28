@@ -7,6 +7,7 @@
 #  id         :bigint           not null, primary key
 #  event_id   :bigint           not null
 #  user_id    :bigint           not null
+#  dropped    :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -22,9 +23,16 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Registration < ApplicationRecord
-  belongs_to :event, inverse_of: :registrations
+  belongs_to :event, counter_cache: true, inverse_of: :registrations
   belongs_to :user, inverse_of: :registrations
 
   has_one :deck_list, dependent: :destroy, inverse_of: :registration
   accepts_nested_attributes_for :deck_list, allow_destroy: true, reject_if: :all_blank, update_only: true
+
+  validates :dropped, inclusion: { in: [true, false] }
+
+  # @return [Boolean]
+  def dropped!
+    dropped? or update!(dropped: true)
+  end
 end

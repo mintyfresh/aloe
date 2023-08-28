@@ -13,6 +13,7 @@ gem 'ed25519'
 gem 'font-awesome-sass'
 gem 'has_unique_attribute'
 gem 'importmap-rails', '~> 1.2'
+gem 'moonfire', github: 'mintyfresh/moonfire'
 gem 'omniauth'
 gem 'omniauth-discord'
 gem 'omniauth-rails_csrf_protection'
@@ -46,4 +47,5 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'webmock'
 end

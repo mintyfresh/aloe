@@ -75,6 +75,12 @@ Rails/SkipsModelValidations:
     - decrement!
     - touch
 
+RSpec:
+  Language:
+    ExampleGroups:
+      Regular:
+        - permissions
+
 RSpec/ExpectChange:
   EnforcedStyle: block
 
@@ -86,6 +92,10 @@ RSpec/NestedGroups:
 
 RSpec/Rails/NegationBeValid:
   EnforcedStyle: be_invalid
+
+RSpec/SortMetadata:
+  Exclude:
+    - spec/policies/*
 
 Style/AccessorGrouping:
   EnforcedStyle: separated

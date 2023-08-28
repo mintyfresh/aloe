@@ -37,5 +37,10 @@ module Aloe
 
     # Correctly handle i18n lookups for indexed nested attributes.
     config.active_model.i18n_customize_full_message = true
+
+    # @return [String] the default host of the application
+    def default_host
+      config.default_host or raise 'config.default_host is not set'
+    end
   end
 end
