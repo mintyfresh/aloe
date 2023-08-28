@@ -16,10 +16,7 @@ module Discord
 
       style :primary
       label 'Register'
-
-      link_to_record do
-        @event
-      end
+      links_to_record { @event }
     end
   end
 end

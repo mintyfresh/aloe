@@ -20,27 +20,8 @@ module Discord
         end
       end
 
-      # @overload title(title)
-      #   @param title [String]
-      #   @return [void]
-      # @overload title(&)
-      #   @yieldreturn [String]
-      #   @return [void]
-      def self.title(title = nil, &)
-        if block_given?
-          define_method(:title, &)
-        elsif title.is_a?(String)
-          define_method(:title) { title }
-        else
-          raise ArgumentError, 'must provide a String or a block'
-        end
-      end
-
-      # @yieldreturn [ApplicationRecord]
-      # @return [void]
-      def self.link_to_record(&)
-        define_method(:link_to_record, &)
-      end
+      has_field_macro :title, required: true
+      has_link_to_record
 
       # @return [Array<Proc>]
       def self.components
@@ -67,22 +48,6 @@ module Discord
       end
 
     protected
-
-      # @abstract
-      # @return [String]
-      def title
-        raise NotImplementedError, "#{self.class.name} must define a title."
-      end
-
-      # @return [String, nil]
-      def custom_id
-        Discord::Components.encode_custom_id(self, link_to_record)
-      end
-
-      # @return [ApplicationRecord, nil]
-      def link_to_record
-        nil
-      end
 
       # @return [Array<Hash>]
       def components
