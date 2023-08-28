@@ -8,7 +8,7 @@ module Sluggable
     # @return [void]
     def sluggifies(*attributes, separator: '-')
       before_save if: -> { attributes.any? { |attribute| attribute_changed?(attribute) } } do
-        self.slug = attributes.map { |attribute| send(attribute).to_s.parameterize }.compact.join(separator)
+        self.slug = attributes.filter_map { |attribute| send(attribute).to_s.parameterize }.join(separator)
       end
     end
   end

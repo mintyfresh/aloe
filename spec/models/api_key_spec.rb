@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: api_keys
@@ -24,7 +26,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe ApiKey, type: :model do
+RSpec.describe ApiKey do
   subject(:api_key) { build(:api_key) }
 
   it 'has a valid factory' do

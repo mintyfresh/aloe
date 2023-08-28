@@ -32,7 +32,7 @@ module Discord
         elsif title.is_a?(String)
           define_method(:title) { title }
         else
-          raise ArgumentError, "must provide a String or a block"
+          raise ArgumentError, 'must provide a String or a block'
         end
       end
 
@@ -52,13 +52,13 @@ module Discord
       # @param style [Symbol]
       # @param options [Hash]
       # @return [void]
-      def self.text_input(label, custom_id: label.to_s.underscore, style: :short, **options, &)
-        components << -> (context) {
-          text_input = TextInput.new(label:, custom_id:, style:, **options)
+      def self.text_input(label, custom_id: label.to_s.underscore, style: :short, **, &)
+        components << proc do |context|
+          text_input = TextInput.new(label:, custom_id:, style:, **)
           text_input.instance_eval(&) if block_given?
 
           text_input.render(context)
-        }
+        end
       end
 
       # @return [Hash]

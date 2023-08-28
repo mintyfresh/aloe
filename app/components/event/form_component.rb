@@ -4,6 +4,8 @@ class Event
   class FormComponent < ApplicationComponent
     # @param event [Event]
     def initialize(event:)
+      super()
+
       @event = event
     end
 

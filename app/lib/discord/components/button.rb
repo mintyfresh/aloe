@@ -33,7 +33,7 @@ module Discord
         elsif label.is_a?(String)
           define_method(:label) { label }
         else
-          raise ArgumentError, "must provide a String or a block"
+          raise ArgumentError, 'must provide a String or a block'
         end
       end
 
@@ -49,7 +49,7 @@ module Discord
         elsif style.is_a?(Symbol)
           define_method(:style) { style }
         else
-          raise ArgumentError, "must provide a Symbol or a block"
+          raise ArgumentError, 'must provide a Symbol or a block'
         end
       end
 
@@ -71,7 +71,7 @@ module Discord
         elsif url.is_a?(String)
           define_method(:url) { url }
         else
-          raise ArgumentError, "must provide a String or a block"
+          raise ArgumentError, 'must provide a String or a block'
         end
       end
 
@@ -87,7 +87,7 @@ module Discord
         elsif [true, false].include?(disabled)
           define_method(:disabled) { disabled }
         else
-          raise ArgumentError, "must provide a Boolean or a block"
+          raise ArgumentError, 'must provide a Boolean or a block'
         end
       end
 

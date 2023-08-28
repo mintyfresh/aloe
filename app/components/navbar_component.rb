@@ -3,6 +3,8 @@
 class NavbarComponent < ApplicationComponent
   # @param current_user [User, nil]
   def initialize(current_user:)
+    super()
+
     @current_user = current_user
   end
 end

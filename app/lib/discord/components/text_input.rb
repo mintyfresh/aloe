@@ -23,6 +23,8 @@ module Discord
 
       # @param attributes [Hash{Symbol => String, Integer, Boolean, Proc}]
       def initialize(**attributes)
+        super()
+
         attributes.assert_valid_keys(*SUPPORTED_ATTRIBUTES)
         @attributes = attributes
       end
@@ -43,7 +45,7 @@ module Discord
       #
       # @return [Hash{Symbol => String, Integer, Boolean, Proc}]
       def renderable_attributes
-        attributes = SUPPORTED_ATTRIBUTES
+        SUPPORTED_ATTRIBUTES
           .select { |attribute| @attributes.key?(attribute) }
           .index_with { |attribute| @attributes[attribute] }
       end
@@ -69,7 +71,7 @@ module Discord
           elsif value != :__unspecified__
             @attributes[attribute] = value
           else
-            raise ArgumentError, "must provide a value or a block"
+            raise ArgumentError, 'must provide a value or a block'
           end
         end
       end

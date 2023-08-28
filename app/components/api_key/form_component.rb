@@ -4,6 +4,8 @@ class ApiKey
   class FormComponent < ApplicationComponent
     # @param api_key [ApiKey]
     def initialize(api_key:)
+      super()
+
       @api_key = api_key
     end
   end

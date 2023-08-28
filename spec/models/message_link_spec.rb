@@ -24,7 +24,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe MessageLink, type: :model do
+RSpec.describe MessageLink do
   subject(:message_link) { build(:message_link) }
 
   it 'has a valid factory' do

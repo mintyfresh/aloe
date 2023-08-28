@@ -24,7 +24,7 @@ module Discord
           content = format_no_op_message(event, registration.deck_list)
         end
 
-        { type: 4, data: { content: content, flags: 1 << 6 } }
+        { type: 4, data: { content:, flags: 1 << 6 } }
       end
 
       class << self
@@ -75,6 +75,8 @@ module Discord
       # @param event [::Event]
       # @param interaction [Hash] the button interaction that opened the modal
       def initialize(event, interaction)
+        super()
+
         @event       = event
         @interaction = interaction
       end

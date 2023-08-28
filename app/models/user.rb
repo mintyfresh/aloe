@@ -15,7 +15,7 @@
 #
 #  index_users_on_discord_id  (discord_id) UNIQUE
 #
-class User < ApplicationRecord  
+class User < ApplicationRecord
   enum :role, {
     user:  'user',
     admin: 'admin'

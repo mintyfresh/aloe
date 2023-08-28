@@ -17,7 +17,7 @@ class ApplicationRecord < ActiveRecord::Base
   # @param error [Symbol]
   # @param options [Hash]
   # @return [ApplicationRecord]
-  def self.build_with_error(attribute, error, **options)
-    new.tap { |record| record.errors.add(attribute, error, **options) }
+  def self.build_with_error(attribute, error, **)
+    new.tap { |record| record.errors.add(attribute, error, **) }
   end
 end

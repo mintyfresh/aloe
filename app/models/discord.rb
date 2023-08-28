@@ -24,8 +24,8 @@ module Discord
   # @param guild [Guild]
   # @param attributes [Hash]
   # @return [Message]
-  def self.send_message(guild:, **attributes)
-    message = client.create_message(channel_id: guild.event_channel_id, **attributes)
+  def self.send_message(guild:, **)
+    message = client.create_message(channel_id: guild.event_channel_id, **)
 
     guild.messages.create!(
       channel_id: message['channel_id'],

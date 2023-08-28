@@ -5,6 +5,8 @@ class ApiKey
     # @param api_key [ApiKey]
     # @param current_user [User, nil]
     def initialize(api_key:, current_user:)
+      super()
+
       @api_key      = api_key
       @current_user = current_user
     end

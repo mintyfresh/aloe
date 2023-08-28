@@ -1,27 +1,45 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UserPolicy, type: :policy do
-  let(:user) { User.new }
+  subject(:policy) { described_class }
 
-  subject { described_class }
+  let(:current_user) { build(:user) }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  permissions :index? do
+    it 'does not permit guests' do
+      expect(policy).not_to permit(nil, User)
+    end
+
+    it 'does not permit users' do
+      expect(policy).not_to permit(current_user, User)
+    end
+
+    it 'permits admins' do
+      current_user.role = 'admin'
+      expect(policy).to permit(current_user, User)
+    end
   end
 
   permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+    let(:user) { build(:user) }
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+    it 'does not permit guests' do
+      expect(policy).not_to permit(nil, user)
+    end
 
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+    it 'permits self' do
+      expect(policy).to permit(user, user)
+    end
 
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it 'does not permit other users' do
+      expect(policy).not_to permit(current_user, user)
+    end
+
+    it 'permits admins' do
+      current_user.role = 'admin'
+      expect(policy).to permit(current_user, user)
+    end
   end
 end
