@@ -1,6 +1,8 @@
 ---
 en:
   activerecord:
+    models:
+      api_key: API key
     attributes:
       event:
         enforce_guild_membership: Enforce server membership

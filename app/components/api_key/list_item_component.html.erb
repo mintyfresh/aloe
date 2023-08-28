@@ -1,0 +1,54 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <span class="<%= 'text-decoration-line-through' if @api_key.revoked? %>">
+          <%= @api_key.name %>
+        </span>
+        <% if @api_key.revoked? %>
+          <span class="visually-hidden">
+            (Revoked)
+          </span>
+        <% end %>
+      </div>
+      <% if dropdown_items.any? %>
+        <div class="col-auto">
+          <div class="dropdown">
+            <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown">
+              <%= icon('fa-solid', 'ellipsis') %>
+            </a>
+            <ul class="dropdown-menu">
+              <% dropdown_items.each do |dropdown_item| %>
+                <li><%= dropdown_item %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="card-body">
+    <% if token.present? %>
+      <div class="alert alert-info">
+        <p>
+          <strong>API key: <%= token %></strong>
+        </p>
+        Be sure to copy it now, you won't be able to see it again.
+        If you lose it, you will have to generate a new key, which will invalidate the current one.<br />
+        Never share your API key with anyone. Just like a password, it can be used to act on your behalf.
+      </div>
+    <% end %>
+    <dl class="mb-0">
+      <dt><%= ApiKey.human_attribute_name(:requests_count) %></dt>
+      <dd><%= @api_key.requests_count %></dd>
+      <dt><%= ApiKey.human_attribute_name(:last_request_at) %></dt>
+      <dd><%= @api_key.last_request_at || 'Never' %></dd>
+      <dt><%= ApiKey.human_attribute_name(:created_at) %></dt>
+      <dd><%= @api_key.created_at %></dd>
+      <% if @api_key.revoked? %>
+        <dt><%= ApiKey.human_attribute_name(:revoked_at) %></dt>
+        <dd><%= @api_key.revoked_at %></dd>
+      <% end %>
+    </dl>
+  </div>
+</div>

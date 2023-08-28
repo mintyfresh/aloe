@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col">
+    <h1 class="mb-3">API Keys</h1>
+  </div>
+  <div class="col-auto mt-auto mb-auto">
+    <%= link_to('Create API Key', new_api_key_path, class: 'btn btn-primary') if policy(ApiKey).create? %>
+  </div>
+</div>
+<p>
+  These are the API keys associated to your account.
+  They allow external applications to act on your behalf.
+  Remove any keys that you do not recognize.
+</p>
+<hr>
+<%= render ApiKey::ListComponent.new(api_keys: @api_keys, current_user:) do |list| %>
+  <% list.with_empty_state do %>
+    <div class="card-body text-center">
+      You haven't created any API keys yet.
+      <% unless policy(ApiKey).create? %>
+        <br>
+        <small class="text-muted">
+          You don't currently have permission to create API keys.<br />
+          Contact an administrator to request permission.
+        </small>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+

@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   get '/auth/discord', to: nil, as: :discord_oauth
   match '/auth/discord/callback', to: 'auth#discord', as: :discord_oauth_callback, via: %i[get post]
 
+  resources :api_keys, only: %i[index new create edit update] do
+    post :rotate, on: :member
+    post :revoke, on: :member
+  end
+
   resources :events do
     post '/registration', to: 'registrations#upsert', as: :registration
     delete '/registration', to: 'registrations#destroy'

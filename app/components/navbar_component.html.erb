@@ -7,6 +7,7 @@
     <div class="collapse navbar-collapse" id="navbar-nav">
       <ul class="navbar-nav">
         <%= nav_link_to('Events', events_path) %>
+        <%= nav_link_to('API Keys', api_keys_path) if Pundit.policy!(@current_user, ApiKey).index? %>
       </ul>
       <ul class="navbar-nav ms-auto">
         <% if @current_user.nil? %>

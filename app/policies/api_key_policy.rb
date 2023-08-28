@@ -16,11 +16,15 @@ class ApiKeyPolicy < ApplicationPolicy
   end
 
   def update?
-    admin? && api_key.user == current_user
+    admin? && api_key.active? && api_key.user == current_user
+  end
+
+  def rotate?
+    admin? && api_key.active? && api_key.user == current_user
   end
 
   def revoke?
-    admin? && api_key.user == current_user
+    admin? && api_key.active? && api_key.user == current_user
   end
 
   def permitted_attributes
@@ -29,7 +33,11 @@ class ApiKeyPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      current_user ? scope.where(user: current_user) : scope.none
+      if admin?
+        scope.where(user: current_user)
+      else
+        scope.none
+      end
     end
   end
 end

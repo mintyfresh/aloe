@@ -21,7 +21,7 @@ RSpec.describe ApiKeyPolicy do
     end
   end
 
-  permissions :show?, :update?, :revoke? do
+  permissions :show?, :update?, :rotate?, :revoke? do
     let(:api_key) { build(:api_key, user: current_user) }
 
     it 'does not permit guests' do
@@ -42,6 +42,22 @@ RSpec.describe ApiKeyPolicy do
       current_user.role = 'admin'
       api_key.user = build(:user, :admin)
       expect(policy).not_to permit(current_user, api_key)
+    end
+
+    permissions :show? do
+      it 'permits admins for revoked keys' do
+        current_user.role = 'admin'
+        api_key.revoked!
+        expect(policy).to permit(current_user, api_key)
+      end
+    end
+
+    permissions :update?, :rotate?, :revoke? do
+      it 'does not permit admins for revoked keys' do
+        current_user.role = 'admin'
+        api_key.revoked!
+        expect(policy).not_to permit(current_user, api_key)
+      end
     end
   end
 end

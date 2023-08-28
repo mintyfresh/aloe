@@ -54,6 +54,11 @@ class ApiKey < ApplicationRecord
   end
 
   # @return [Boolean]
+  def active?
+    revoked_at.blank?
+  end
+
+  # @return [Boolean]
   def revoked?
     revoked_at.present?
   end

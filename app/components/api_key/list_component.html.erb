@@ -1,0 +1,8 @@
+<% @api_keys.each do |api_key| %>
+  <%= render ApiKey::ListItemComponent.new(api_key:, current_user: @current_user) %>
+<% end %>
+<% if @api_keys.none? %>
+  <div class="card mb-3">
+    <%= empty_state %>
+  </div>
+<% end %>
