@@ -1,9 +1,20 @@
-<h1>Events</h1>
+<div class="row mb-1">
+  <div class="col">
+    <h1>Events</h1>
+  </div>
+  <div class="col-auto my-auto">
+    <%= link_to('Create an Event', new_event_path, class: 'btn btn-primary') if policy(Event).create? %>
+  </div>
+</div>
 <% @events.each do |event| %>
   <div id="event-<%= event.id %>">
     <%= link_to(event.name, event) %>
   </div>
 <% end %>
 <% if @events.none? %>
-  <p>No events yet.</p>
+  <div class="card mb-3">
+    <div class="card-body text-center">
+      No events yet.
+    </div>
+  </div>
 <% end %>
