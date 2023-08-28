@@ -17,16 +17,9 @@ module DiscordWebMocks
         body = JSON.parse(request.body)
 
         response = {
-          headers: DEFAULT_HEADERS,
-          body:    {
-            channel_id:,
-            id:         Faker::Number.number(digits: 18),
-            guild_id:   Faker::Number.number(digits: 18),
-            content:    body['content'],
-            embeds:     body['embeds'],
-            components: body['components'],
-            timestamp:  Time.current.iso8601
-          }
+          headers: DEFAULT_HEADERS, body: build_mock_discord_api_message(
+            channel_id:, **body.slice('content', 'embeds', 'components').symbolize_keys
+          )
         }
 
         yield(request, response) if block_given?
@@ -34,5 +27,18 @@ module DiscordWebMocks
 
         response
       end
+  end
+
+  # @param overrides [Hash]
+  # @returm [Hash]
+  def build_mock_discord_api_message(**overrides)
+    {
+      id:         Faker::Number.number(digits: 18),
+      channel_id: Faker::Number.number(digits: 18),
+      guild_id:   Faker::Number.number(digits: 18),
+      content:    Faker::Lorem.sentence,
+      timestamp:  Time.current.iso8601,
+      **overrides
+    }
   end
 end

@@ -75,12 +75,7 @@ module Discord
 
       # @return [Hash]
       def view_button
-        {
-          type:      2,
-          label:     'View',
-          style:     5,
-          url:       event_url
-        }
+        Discord::Components::EventViewButton.render(@event, host: @host)
       end
     end
   end
