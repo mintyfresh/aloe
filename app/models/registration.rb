@@ -23,6 +23,8 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Registration < ApplicationRecord
+  include Moonfire::Model
+
   belongs_to :event, counter_cache: true, inverse_of: :registrations
   belongs_to :user, inverse_of: :registrations
 
