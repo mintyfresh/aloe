@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   # GET /events
   def index
     authorize Event
-    @events = policy_scope(Event).order(starts_on: :desc, id: :desc)
+    @events = policy_scope(Event).order(starts_at: :desc, id: :desc)
   end
 
   # GET /events/:id

@@ -44,6 +44,7 @@ Lint/AmbiguousBlockAssociation:
 
 Metrics/BlockLength:
   Exclude:
+    - 'app/models/concerns/**/*.rb'
     - 'config/environments/*.rb'
     - 'config/routes.rb'
     - 'lib/tasks/**/*.rake'

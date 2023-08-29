@@ -21,11 +21,18 @@ module Discord
         value { @event.location }
       end
 
-      field 'Start Date' do
-        value { @event.starts_on && I18n.l(@event.starts_on) }
+      field 'Starts At' do
+        value { format_timestamp(@event.starts_at) }
       end
-      field 'End Date' do
-        value { @event.ends_on && I18n.l(@event.ends_on) }
+      field 'Ends At' do
+        value { format_timestamp(@event.ends_at) }
+      end
+
+      field 'Registration Opens At' do
+        value { format_timestamp(@event.registration_opens_at) }
+      end
+      field 'Registration Closes At' do
+        value { format_timestamp(@event.registration_closes_at) }
       end
 
       field 'Registered' do
@@ -34,6 +41,17 @@ module Discord
             "#{count} #{'player'.pluralize(count)}"
           end
         end
+      end
+
+    private
+
+      # @param time [Time]
+      # @return [String]
+      def format_timestamp(time)
+        time && <<~TEXT.strip
+          <t:#{time.to_i}:f>
+          (#{time.strftime('%B %-d, %Y %l:%M %p %Z')})
+        TEXT
       end
     end
   end

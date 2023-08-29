@@ -12,8 +12,11 @@
 #  format                   :string
 #  description              :string
 #  location                 :string
-#  starts_on                :date
-#  ends_on                  :date
+#  time_zone                :string           not null
+#  starts_at                :datetime         not null
+#  ends_at                  :datetime         not null
+#  registration_opens_at    :datetime
+#  registration_closes_at   :datetime
 #  enforce_guild_membership :boolean          default(TRUE), not null
 #  registrations_count      :integer          default(0), not null
 #  created_at               :datetime         not null
@@ -40,8 +43,10 @@ FactoryBot.define do
     format { Event::SUPPORTED_FORMATS.sample }
     description { Faker::Lorem.paragraph }
     location { Faker::Address.full_address }
-    starts_on { Faker::Date.between(from: 1.year.ago, to: 1.year.from_now) }
-    ends_on { starts_on + 2.days }
+    time_zone { 'America/Toronto' }
+
+    starts_at { Faker::Time.between(from: 1.year.ago, to: 1.year.from_now) }
+    ends_at { starts_at + 2.days }
 
     trait :with_registrations do
       transient do

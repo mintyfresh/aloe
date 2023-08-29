@@ -24,7 +24,8 @@ class EventPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[name format description location starts_on ends_on enforce_guild_membership]
+    %i[name format description location time_zone registration_opens_at registration_closes_at
+       starts_at ends_at enforce_guild_membership]
   end
 
   def permitted_attributes_for_create

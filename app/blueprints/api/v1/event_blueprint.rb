@@ -10,8 +10,11 @@ module Api
       field :format
       field :description
       field :location
-      field :starts_on
-      field :ends_on
+      field :time_zone
+      field :registration_opens_at
+      field :registration_closes_at
+      field :starts_at
+      field :ends_at
       field :enforce_guild_membership
       field :created_at
       field :updated_at

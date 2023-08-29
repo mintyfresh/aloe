@@ -72,8 +72,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
     t.string "format"
     t.string "description"
     t.string "location"
-    t.date "starts_on"
-    t.date "ends_on"
+    t.string "time_zone", null: false
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at", null: false
+    t.datetime "registration_opens_at"
+    t.datetime "registration_closes_at"
     t.boolean "enforce_guild_membership", default: true, null: false
     t.integer "registrations_count", default: 0, null: false
     t.datetime "created_at", null: false
@@ -82,7 +85,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
     t.index ["guild_id"], name: "index_events_on_guild_id"
     t.index ["name"], name: "index_events_on_name", unique: true
     t.index ["slug"], name: "index_events_on_slug", unique: true
-    t.check_constraint "starts_on IS NULL OR ends_on IS NULL OR starts_on <= ends_on"
+    t.check_constraint "registration_opens_at IS NULL OR registration_closes_at IS NULL OR registration_opens_at <= registration_closes_at"
+    t.check_constraint "starts_at <= ends_at"
   end
 
   create_table "message_links", force: :cascade do |t|

@@ -12,8 +12,11 @@
 #  format                   :string
 #  description              :string
 #  location                 :string
-#  starts_on                :date
-#  ends_on                  :date
+#  time_zone                :string           not null
+#  starts_at                :datetime         not null
+#  ends_at                  :datetime         not null
+#  registration_opens_at    :datetime
+#  registration_closes_at   :datetime
 #  enforce_guild_membership :boolean          default(TRUE), not null
 #  registrations_count      :integer          default(0), not null
 #  created_at               :datetime         not null
@@ -85,19 +88,45 @@ RSpec.describe Event do
     expect(event).to be_invalid
   end
 
-  it 'is valid without a start date' do
-    event.starts_on = nil
+  it 'is invalid without a time zone' do
+    event.time_zone = nil
+    expect(event).to be_invalid
+  end
+
+  it 'is invalid with an invalid time zone' do
+    event.time_zone = 'invalid'
+    expect(event).to be_invalid
+  end
+
+  it 'is invalid without a start time' do
+    event.starts_at = nil
+    expect(event).to be_invalid
+  end
+
+  it 'is invalid without an end time' do
+    event.ends_at = nil
+    expect(event).to be_invalid
+  end
+
+  it 'is invalid with an end time before the start time' do
+    event.starts_at = 1.day.from_now
+    event.ends_at   = 1.day.ago
+    expect(event).to be_invalid
+  end
+
+  it 'is valid without a registration opens at time' do
+    event.registration_opens_at = nil
     expect(event).to be_valid
   end
 
-  it 'is valid without an end date' do
-    event.ends_on = nil
+  it 'is valid without a registration closes at time' do
+    event.registration_closes_at = nil
     expect(event).to be_valid
   end
 
-  it 'is invalid with an end date before the start date' do
-    event.starts_on = 1.day.from_now
-    event.ends_on   = 1.day.ago
+  it 'is invalid with a registration closes at time before the registration opens at time' do
+    event.registration_opens_at  = 1.day.from_now
+    event.registration_closes_at = 1.day.ago
     expect(event).to be_invalid
   end
 

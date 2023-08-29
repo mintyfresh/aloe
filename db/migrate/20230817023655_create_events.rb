@@ -12,14 +12,21 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.string     :format
       t.string     :description
       t.string     :location
-      t.date       :starts_on
-      t.date       :ends_on
+      t.string     :time_zone, null: false
+      t.datetime   :starts_at, null: false
+      t.datetime   :ends_at, null: false
+      t.datetime   :registration_opens_at
+      t.datetime   :registration_closes_at
       t.boolean    :enforce_guild_membership, null: false, default: true
       t.integer    :registrations_count, null: false, default: 0
       t.timestamps
 
       t.check_constraint <<-SQL.squish
-        "starts_on" IS NULL OR "ends_on" IS NULL OR "starts_on" <= "ends_on"
+        "registration_opens_at" IS NULL OR "registration_closes_at" IS NULL OR
+          "registration_opens_at" <= "registration_closes_at"
+      SQL
+      t.check_constraint <<-SQL.squish
+        "starts_at" <= "ends_at"
       SQL
     end
   end

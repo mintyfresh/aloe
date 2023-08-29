@@ -12,8 +12,11 @@
 #  format                   :string
 #  description              :string
 #  location                 :string
-#  starts_on                :date
-#  ends_on                  :date
+#  time_zone                :string           not null
+#  starts_at                :datetime         not null
+#  ends_at                  :datetime         not null
+#  registration_opens_at    :datetime
+#  registration_closes_at   :datetime
 #  enforce_guild_membership :boolean          default(TRUE), not null
 #  registrations_count      :integer          default(0), not null
 #  created_at               :datetime         not null
@@ -35,11 +38,14 @@ class Event < ApplicationRecord
   include MessageLinkable
   include Moonfire::Model
   include Sluggable
+  include TimeZoneable
 
   SUPPORTED_FORMATS = %w[
     core
     adventure
     harmony
+    nightmare
+    custom
   ].freeze
 
   belongs_to :guild, class_name: 'Discord::Guild', inverse_of: :events
@@ -53,16 +59,47 @@ class Event < ApplicationRecord
   has_unique_attribute :name, index: 'index_events_on_name'
   has_unique_attribute :name, index: 'index_events_on_slug'
 
+  has_time_zone
+  has_date_time_in_time_zone :registration_opens_at, :registration_closes_at, :starts_at, :ends_at
+
   validates :name, presence: true, length: { maximum: 50 }
   validates :format, inclusion: { in: SUPPORTED_FORMATS, allow_nil: true }
   validates :description, length: { maximum: 5000 }
   validates :location, length: { maximum: 250 }
   validates :enforce_guild_membership, inclusion: { in: [true, false] }
+  validates :starts_at, :ends_at, presence: true
 
-  validate if: -> { starts_on.present? && ends_on.present? } do
-    starts_on <= ends_on or
-      errors.add(:ends_on, :on_or_after, restriction: starts_on)
+  with_options allow_nil: true do
+    validates :starts_at, comparison: { less_than: :ends_at }, if: :ends_at
+    validates :registration_opens_at, comparison: { less_than: :registration_closes_at }, if: :registration_closes_at
   end
 
   sluggifies :name
+
+  # @return [Boolean]
+  def open_for_registration?
+    return false if registration_opens_at && registration_opens_at >= Time.current
+
+    (registration_closes_at || starts_at) >= Time.current
+  end
+
+  # @return [Boolean]
+  def closed_to_registration?
+    !open_for_registration?
+  end
+
+  # @return [Boolean]
+  def upcoming?
+    Time.current < starts_at
+  end
+
+  # @return [Boolean]
+  def ongoing?
+    Time.current.between?(starts_at, ends_at)
+  end
+
+  # @return [Boolean]
+  def finished?
+    Time.current > ends_at
+  end
 end

@@ -35,15 +35,37 @@
   </div>
   <div class="mb-3">
     <%= form.label(:location, class: 'form-label') %>
-    <%= form.text_field(:location, class: 'form-control', placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year}") %>
+    <%= form.text_field(:location, class: 'form-control', placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year} or Online") %>
   </div>
   <div class="mb-3">
-    <%= form.label(:starts_on, class: 'form-label') %>
-    <%= form.date_field(:starts_on, class: 'form-control') %>
+    <%= form.label(:time_zone, class: 'form-label') %>*
+    <%= form.time_zone_select(:time_zone, nil, {}, class: 'form-select', required: true) %>
   </div>
-  <div class="mb-3">
-    <%= form.label(:ends_on, class: 'form-label') %>
-    <%= form.date_field(:ends_on, class: 'form-control') %>
+  <div class="row mb-3">
+    <div class="col">
+      <%= form.label(:starts_at, class: 'form-label') %>*
+      <%= form.datetime_field(:starts_at, class: 'form-control', required: true) %>
+    </div>
+    <div class="col">
+      <%= form.label(:ends_at, class: 'form-label') %>*
+      <%= form.datetime_field(:ends_at, class: 'form-control', required: true) %>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <%= form.label(:registration_opens_at, class: 'form-label') %>
+      <%= form.datetime_field(:registration_opens_at, class: 'form-control') %>
+      <span class="form-text">
+        If not specified, registration will open as soon as the event is created.
+      </span>
+    </div>
+    <div class="col">
+      <%= form.label(:registration_closes_at, class: 'form-label') %>
+      <%= form.datetime_field(:registration_closes_at, class: 'form-control') %>
+      <span class="form-text">
+        If not specified, registration will close once the event starts.
+      </span>
+    </div>
   </div>
   <div class="mb-3">
     <%= form.submit(class: 'btn btn-primary') %>
