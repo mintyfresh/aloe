@@ -11,7 +11,7 @@ gem 'bootsnap', require: false
 gem 'bootstrap'
 gem 'ed25519'
 gem 'font-awesome-sass'
-gem 'has_unique_attribute'
+gem 'has_unique_attribute', '~> 0.1.4'
 gem 'importmap-rails', '~> 1.2'
 gem 'moonfire', github: 'mintyfresh/moonfire'
 gem 'omniauth'
