@@ -88,7 +88,7 @@ module Discord
         title
       end
 
-      link_to_record do
+      links_to_record do
         @event
       end
 

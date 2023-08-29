@@ -84,7 +84,7 @@ class Event < ApplicationRecord
   end
 
   # @return [Boolean]
-  def closed_to_registration?
+  def closed_for_registration?
     !open_for_registration?
   end
 
