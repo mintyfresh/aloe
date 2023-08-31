@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_31_043727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -95,6 +95,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
     t.index ["guild_id"], name: "index_discord_roles_on_guild_id"
   end
 
+  create_table "event_role_configs", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "name", null: false
+    t.string "permissions", default: "0", null: false
+    t.integer "colour"
+    t.boolean "hoist", default: false, null: false
+    t.boolean "mentionable", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_role_configs_on_event_id", unique: true
+  end
+
   create_table "events", force: :cascade do |t|
     t.bigint "created_by_id", null: false
     t.citext "name", null: false
@@ -140,6 +152,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
 
   add_foreign_key "api_keys", "users"
   add_foreign_key "deck_lists", "registrations"
+  add_foreign_key "event_role_configs", "events"
   add_foreign_key "events", "users", column: "created_by_id"
   add_foreign_key "registrations", "events"
   add_foreign_key "registrations", "users"

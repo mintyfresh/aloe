@@ -26,6 +26,8 @@ class EventsController < ApplicationController
   def new
     @event = Event.new
     authorize @event
+
+    @event.build_role_config
   end
 
   # POST /events

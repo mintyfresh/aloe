@@ -54,14 +54,14 @@ RSpec.describe Registration do
 
   it 'publishes a message when a user drops' do
     registration.save!
-    expect { registration.drop! }.to have_published(described_class, :dropped)
+    expect { registration.drop! }.to have_published(described_class, :drop)
       .with(registration:)
   end
 
   it 'publishes a message when a user resumes' do
     registration.save!
     registration.drop!
-    expect { registration.resume! }.to have_published(described_class, :resumed)
+    expect { registration.resume! }.to have_published(described_class, :resume)
       .with(registration:)
   end
 end

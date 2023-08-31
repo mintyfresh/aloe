@@ -33,5 +33,35 @@ module Discord
     validates :hoist, inclusion: { in: [true, false] }
     validates :permissions, presence: true
     validates :mentionable, inclusion: { in: [true, false] }
+
+    # @param data [Hash] role attributes from the Discord API
+    # @return [Discord::Role]
+    def self.upsert_from_discord(guild_id, data)
+      transaction do
+        result = upsert_all( # rubocop:disable Rails/SkipsModelValidations
+          [
+            id:            data['id'],
+            guild_id:,
+            name:          data['name'],
+            colour:        data['color'],
+            icon:          data['icon'],
+            unicode_emoji: data['unicode_emoji'],
+            permissions:   data['permissions'],
+            hoist:         data['hoist'],
+            mentionable:   data['mentionable'],
+            created_at:    current = Time.current.iso8601,
+            updated_at:    current
+          ],
+          returning:   column_names, record_timestamps: false,
+          unique_by:   %i[id],
+          update_only: %i[name colour icon unicode_emoji permissions hoist mentionable]
+        )
+
+        new(result.columns.zip(result.rows.first).to_h) do |record|
+          record.instance_variable_set(:@new_record, false)
+          record.instance_variable_set(:@previously_new_record, record.created_at == record.updated_at)
+        end
+      end
+    end
   end
 end

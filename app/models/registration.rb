@@ -35,8 +35,8 @@ class Registration < ApplicationRecord
 
   publishes_messages_on :create, :destroy
 
-  publishes_message :dropped, on: :update, if: -> { saved_change_to_dropped?(to: true)  }
-  publishes_message :resumed, on: :update, if: -> { saved_change_to_dropped?(to: false) }
+  publishes_message :drop, on: :update, if: -> { saved_change_to_dropped?(to: true) }
+  publishes_message :resume, on: :update, if: -> { saved_change_to_dropped?(to: false) }
 
   # @return [Boolean]
   def drop!
