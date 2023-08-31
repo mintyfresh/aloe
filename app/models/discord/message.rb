@@ -41,7 +41,7 @@ module Discord
           [
             message_id: data['id'],
             channel_id: data['channel_id'],
-            guild_id:   data['guild_id'],
+            guild_id:   data['guild_id'] || Guild.last.id, # TODO: Fix me.
             posted_at:  data['timestamp'],
             edited_at:  data['edited_timestamp'],
             created_at: current = Time.current.iso8601,

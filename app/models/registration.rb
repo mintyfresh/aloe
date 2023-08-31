@@ -33,8 +33,18 @@ class Registration < ApplicationRecord
 
   validates :dropped, inclusion: { in: [true, false] }
 
+  publishes_messages_on :create, :destroy
+
+  publishes_message :dropped, on: :update, if: -> { saved_change_to_dropped?(to: true)  }
+  publishes_message :resumed, on: :update, if: -> { saved_change_to_dropped?(to: false) }
+
   # @return [Boolean]
-  def dropped!
-    dropped? or update!(dropped: true)
+  def drop!
+    update!(dropped: true)
+  end
+
+  # @return [Boolean]
+  def resume!
+    update!(dropped: false)
   end
 end

@@ -76,6 +76,8 @@ class Event < ApplicationRecord
 
   sluggifies :name
 
+  publishes_messages_on :create
+
   # @return [Boolean]
   def open_for_registration?
     return false if registration_opens_at && registration_opens_at >= Time.current

@@ -40,4 +40,28 @@ RSpec.describe Registration do
     registration.user = nil
     expect(registration).to be_invalid
   end
+
+  it 'publishes a message on create' do
+    expect { registration.save! }.to have_published(described_class, :create)
+      .with(registration:)
+  end
+
+  it 'publishes a message on destroy' do
+    registration.save!
+    expect { registration.destroy! }.to have_published(described_class, :destroy)
+      .with(hash_including(:changes, registration:))
+  end
+
+  it 'publishes a message when a user drops' do
+    registration.save!
+    expect { registration.drop! }.to have_published(described_class, :dropped)
+      .with(registration:)
+  end
+
+  it 'publishes a message when a user resumes' do
+    registration.save!
+    registration.drop!
+    expect { registration.resume! }.to have_published(described_class, :resumed)
+      .with(registration:)
+  end
 end

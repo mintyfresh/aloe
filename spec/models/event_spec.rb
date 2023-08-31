@@ -131,6 +131,6 @@ RSpec.describe Event do
   end
 
   it 'publishes a create event when created' do
-    expect { event.save! }.to have_published(Event::Create).with(event:)
+    expect { event.save! }.to have_published(Event::CreateMessage).with(event:)
   end
 end
