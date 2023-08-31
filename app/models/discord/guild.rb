@@ -22,8 +22,6 @@ module Discord
     has_many :messages, through: :channels
     has_many :roles, dependent: false, inverse_of: :guild
 
-    has_many :events, dependent: :restrict_with_error, foreign_key: :discord_guild_id, inverse_of: :discord_guild
-
     validates :id, presence: true
     validates :installed_by_id, presence: true
     validates :event_channel_id, presence: true

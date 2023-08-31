@@ -6,8 +6,6 @@
 #
 #  id                       :bigint           not null, primary key
 #  created_by_id            :bigint           not null
-#  discord_guild_id         :bigint           not null
-#  discord_role_id          :bigint
 #  name                     :citext           not null
 #  slug                     :string           not null
 #  format                   :string
@@ -25,16 +23,13 @@
 #
 # Indexes
 #
-#  index_events_on_created_by_id     (created_by_id)
-#  index_events_on_discord_guild_id  (discord_guild_id)
-#  index_events_on_discord_role_id   (discord_role_id)
-#  index_events_on_name              (name) UNIQUE
-#  index_events_on_slug              (slug) UNIQUE
+#  index_events_on_created_by_id  (created_by_id)
+#  index_events_on_name           (name) UNIQUE
+#  index_events_on_slug           (slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
-#  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 require 'rails_helper'
 

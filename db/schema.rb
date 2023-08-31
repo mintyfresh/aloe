@@ -68,6 +68,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
     t.index ["channel_id"], name: "index_discord_messages_on_channel_id"
   end
 
+  create_table "discord_record_links", force: :cascade do |t|
+    t.bigint "record_id", null: false
+    t.string "linkable_type", null: false
+    t.bigint "linkable_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["linkable_type", "linkable_id", "name"], name: "index_discord_record_links_on_linkable_and_name", unique: true
+    t.index ["linkable_type", "linkable_id"], name: "index_discord_record_links_on_linkable"
+    t.index ["record_id"], name: "index_discord_record_links_on_record_id"
+  end
+
   create_table "discord_roles", force: :cascade do |t|
     t.bigint "guild_id", null: false
     t.string "name", null: false
@@ -85,8 +97,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
 
   create_table "events", force: :cascade do |t|
     t.bigint "created_by_id", null: false
-    t.bigint "discord_guild_id", null: false
-    t.bigint "discord_role_id"
     t.citext "name", null: false
     t.string "slug", null: false
     t.string "format"
@@ -102,24 +112,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
-    t.index ["discord_guild_id"], name: "index_events_on_discord_guild_id"
-    t.index ["discord_role_id"], name: "index_events_on_discord_role_id"
     t.index ["name"], name: "index_events_on_name", unique: true
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.check_constraint "registration_opens_at IS NULL OR registration_closes_at IS NULL OR registration_opens_at <= registration_closes_at"
     t.check_constraint "starts_at <= ends_at"
-  end
-
-  create_table "message_links", force: :cascade do |t|
-    t.bigint "message_id", null: false
-    t.string "linkable_type", null: false
-    t.bigint "linkable_id", null: false
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["linkable_type", "linkable_id", "name"], name: "index_message_links_on_linkable_and_name", unique: true
-    t.index ["linkable_type", "linkable_id"], name: "index_message_links_on_linkable"
-    t.index ["message_id"], name: "index_message_links_on_message_id"
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -144,9 +140,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
 
   add_foreign_key "api_keys", "users"
   add_foreign_key "deck_lists", "registrations"
-  add_foreign_key "events", "discord_guilds"
   add_foreign_key "events", "users", column: "created_by_id"
-  add_foreign_key "message_links", "discord_messages", column: "message_id"
   add_foreign_key "registrations", "events"
   add_foreign_key "registrations", "users"
 end

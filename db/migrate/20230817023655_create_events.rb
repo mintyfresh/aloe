@@ -6,8 +6,6 @@ class CreateEvents < ActiveRecord::Migration[7.0]
 
     create_table :events do |t|
       t.belongs_to :created_by, null: false, foreign_key: { to_table: :users }
-      t.belongs_to :discord_guild, null: false, foreign_key: false
-      t.belongs_to :discord_role, foreign_key: false
       t.citext     :name, null: false, index: { unique: true }
       t.string     :slug, null: false, index: { unique: true }
       t.string     :format
