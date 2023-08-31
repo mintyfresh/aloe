@@ -5,9 +5,7 @@
 # Table name: discord_messages
 #
 #  id            :bigint           not null, primary key
-#  message_id    :bigint           not null
 #  channel_id    :bigint           not null
-#  guild_id      :bigint           not null
 #  content       :string
 #  posted_at     :datetime
 #  edited_at     :datetime
@@ -19,14 +17,13 @@
 #
 # Indexes
 #
-#  index_discord_messages_on_message_id  (message_id) UNIQUE
+#  index_discord_messages_on_channel_id  (channel_id)
 #
 FactoryBot.define do
   factory :discord_message, class: 'Discord::Message' do
-    guild factory: :discord_guild
+    channel factory: :discord_channel
 
-    channel_id { guild.event_channel_id }
-    message_id { Faker::Number.number(digits: 18) }
+    id { Faker::Number.number(digits: 18) }
     content { Faker::Lorem.sentence }
   end
 end

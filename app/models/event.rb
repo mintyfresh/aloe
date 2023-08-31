@@ -5,8 +5,9 @@
 # Table name: events
 #
 #  id                       :bigint           not null, primary key
-#  guild_id                 :bigint           not null
 #  created_by_id            :bigint           not null
+#  discord_guild_id         :bigint           not null
+#  discord_role_id          :bigint
 #  name                     :citext           not null
 #  slug                     :string           not null
 #  format                   :string
@@ -24,15 +25,16 @@
 #
 # Indexes
 #
-#  index_events_on_created_by_id  (created_by_id)
-#  index_events_on_guild_id       (guild_id)
-#  index_events_on_name           (name) UNIQUE
-#  index_events_on_slug           (slug) UNIQUE
+#  index_events_on_created_by_id     (created_by_id)
+#  index_events_on_discord_guild_id  (discord_guild_id)
+#  index_events_on_discord_role_id   (discord_role_id)
+#  index_events_on_name              (name) UNIQUE
+#  index_events_on_slug              (slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
-#  fk_rails_...  (guild_id => discord_guilds.id)
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 class Event < ApplicationRecord
   include MessageLinkable
@@ -48,8 +50,11 @@ class Event < ApplicationRecord
     custom
   ].freeze
 
-  belongs_to :guild, class_name: 'Discord::Guild', inverse_of: :events
   belongs_to :created_by, class_name: 'User', inverse_of: :created_events
+  belongs_to :discord_guild, class_name: 'Discord::Guild', inverse_of: :events
+
+  belongs_to :discord_role, class_name: 'Discord::Role', inverse_of: :events, optional: true
+  accepts_nested_attributes_for :discord_role, reject_if: :all_blank, update_only: true
 
   has_many :registrations, dependent: :destroy, inverse_of: :event
 

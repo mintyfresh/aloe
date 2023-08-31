@@ -5,9 +5,7 @@
 # Table name: discord_messages
 #
 #  id            :bigint           not null, primary key
-#  message_id    :bigint           not null
 #  channel_id    :bigint           not null
-#  guild_id      :bigint           not null
 #  content       :string
 #  posted_at     :datetime
 #  edited_at     :datetime
@@ -19,7 +17,7 @@
 #
 # Indexes
 #
-#  index_discord_messages_on_message_id  (message_id) UNIQUE
+#  index_discord_messages_on_channel_id  (channel_id)
 #
 require 'rails_helper'
 
@@ -30,23 +28,19 @@ RSpec.describe Discord::Message do
     expect(message).to be_valid
   end
 
-  it 'is invalid without a message ID' do
-    message.message_id = nil
+  it 'is invalid without an ID' do
+    message.id = nil
     expect(message).to be_invalid
   end
 
   it 'is invalid without a channel ID' do
-    message.channel_id = nil
+    message.channel = nil
     expect(message).to be_invalid
   end
 
-  it 'is invalid without a guild ID' do
-    message.guild = nil
-    expect(message).to be_invalid
-  end
-
-  it 'is invalid without a deleted flag' do
-    message.deleted = nil
-    expect(message).to be_invalid
+  it 'is valid with a channel ID but no channel' do
+    message.channel = nil
+    message.channel_id = Faker::Number.number(digits: 18)
+    expect(message).to be_valid
   end
 end

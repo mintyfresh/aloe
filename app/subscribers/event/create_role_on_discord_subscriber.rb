@@ -7,7 +7,7 @@ class Event
     # @return [void]
     def perform
       Discord.client.create_guild_role(
-        guild_id:    event.guild.guild_id,
+        guild_id:    event.discord_guild.id,
         name:        event.name,
         permissions: '0',
         mentionable: true

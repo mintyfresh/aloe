@@ -5,8 +5,9 @@
 # Table name: events
 #
 #  id                       :bigint           not null, primary key
-#  guild_id                 :bigint           not null
 #  created_by_id            :bigint           not null
+#  discord_guild_id         :bigint           not null
+#  discord_role_id          :bigint
 #  name                     :citext           not null
 #  slug                     :string           not null
 #  format                   :string
@@ -24,20 +25,21 @@
 #
 # Indexes
 #
-#  index_events_on_created_by_id  (created_by_id)
-#  index_events_on_guild_id       (guild_id)
-#  index_events_on_name           (name) UNIQUE
-#  index_events_on_slug           (slug) UNIQUE
+#  index_events_on_created_by_id     (created_by_id)
+#  index_events_on_discord_guild_id  (discord_guild_id)
+#  index_events_on_discord_role_id   (discord_role_id)
+#  index_events_on_name              (name) UNIQUE
+#  index_events_on_slug              (slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
-#  fk_rails_...  (guild_id => discord_guilds.id)
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 FactoryBot.define do
   factory :event do
-    guild factory: :discord_guild
     created_by factory: :user
+    discord_guild
 
     name { Faker::Book.title }
     format { Event::SUPPORTED_FORMATS.sample }
@@ -47,6 +49,10 @@ FactoryBot.define do
 
     starts_at { Faker::Time.between(from: 1.year.ago, to: 1.year.from_now) }
     ends_at { starts_at + 2.days }
+
+    trait :with_discord_role do
+      discord_role { association(:discord_role, guild: discord_guild) }
+    end
 
     trait :with_registrations do
       transient do

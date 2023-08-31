@@ -41,7 +41,7 @@ module Discord
       private_class_method def self.upsert_guild_record(interaction)
         retries ||= 0
 
-        guild = Discord::Guild.find_or_initialize_by(guild_id: interaction['guild_id'])
+        guild = Discord::Guild.find_or_initialize_by(id: interaction['guild_id'])
         guild.installed_by_id ||= interaction.dig('member', 'user', 'id')
         guild.event_channel_id  = interaction.dig('channel', 'id')
 

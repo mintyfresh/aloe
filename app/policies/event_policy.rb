@@ -29,7 +29,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    permitted_attributes + %i[guild_id]
+    permitted_attributes + %i[discord_guild_id]
   end
 
   class Scope < Scope

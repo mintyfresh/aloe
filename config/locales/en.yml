@@ -6,8 +6,8 @@ en:
     attributes:
       event:
         enforce_guild_membership: Enforce server membership
-        guild: Discord server
-        guild_id: Discord server
+        discord_guild: Discord server
+        discord_guild_id: Discord server
       registration/deck_list:
         pony_head_url: Pony Head URL
     errors:

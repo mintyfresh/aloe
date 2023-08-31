@@ -6,7 +6,7 @@ class Event
 
     # @return [void]
     def perform
-      message = Discord.client.create_message(channel_id: event.guild.event_channel_id, **template)
+      message = Discord.client.create_message(channel_id: event.discord_guild.event_channel_id, **template)
       message = Discord::Message.upsert_from_discord(message)
 
       event.update!(announcement_message: message)

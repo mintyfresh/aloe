@@ -5,7 +5,6 @@ module Api
     class GuildBlueprint < BaseBlueprint
       identifier :id
 
-      field :guild_id
       field :installed_by_id
       field :event_channel_id
       field :created_at

@@ -5,7 +5,6 @@
 # Table name: discord_guilds
 #
 #  id               :bigint           not null, primary key
-#  guild_id         :bigint           not null
 #  installed_by_id  :bigint           not null
 #  event_channel_id :bigint           not null
 #  created_at       :datetime         not null
@@ -13,7 +12,6 @@
 #
 # Indexes
 #
-#  index_discord_guilds_on_guild_id         (guild_id) UNIQUE
 #  index_discord_guilds_on_installed_by_id  (installed_by_id)
 #
 require 'rails_helper'
@@ -25,8 +23,8 @@ RSpec.describe Discord::Guild do
     expect(guild).to be_valid
   end
 
-  it 'is invalid without a guild ID' do
-    guild.guild_id = nil
+  it 'is invalid without an ID' do
+    guild.id = nil
     expect(guild).to be_invalid
   end
 

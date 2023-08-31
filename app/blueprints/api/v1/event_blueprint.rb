@@ -24,7 +24,7 @@ module Api
       end
 
       field :guild do |event, options|
-        api_v1_guild_url(event.guild_id, host: options[:host])
+        api_v1_guild_url(event.discord_guild_id, host: options[:host])
       end
 
       view :detail do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_31_034221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -39,20 +39,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
     t.index ["registration_id"], name: "index_deck_lists_on_registration_id", unique: true
   end
 
-  create_table "discord_guilds", force: :cascade do |t|
+  create_table "discord_channels", force: :cascade do |t|
     t.bigint "guild_id", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guild_id"], name: "index_discord_channels_on_guild_id"
+  end
+
+  create_table "discord_guilds", force: :cascade do |t|
     t.bigint "installed_by_id", null: false
     t.bigint "event_channel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["guild_id"], name: "index_discord_guilds_on_guild_id", unique: true
     t.index ["installed_by_id"], name: "index_discord_guilds_on_installed_by_id"
   end
 
   create_table "discord_messages", force: :cascade do |t|
-    t.bigint "message_id", null: false
     t.bigint "channel_id", null: false
-    t.bigint "guild_id", null: false
     t.string "content"
     t.datetime "posted_at", precision: nil
     t.datetime "edited_at", precision: nil
@@ -61,12 +65,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
     t.bigint "deleted_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["message_id"], name: "index_discord_messages_on_message_id", unique: true
+    t.index ["channel_id"], name: "index_discord_messages_on_channel_id"
+  end
+
+  create_table "discord_roles", force: :cascade do |t|
+    t.bigint "guild_id", null: false
+    t.string "name", null: false
+    t.integer "colour"
+    t.boolean "hoist", default: false, null: false
+    t.string "icon"
+    t.string "unicode_emoji"
+    t.string "permissions", default: "0", null: false
+    t.boolean "mentionable", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guild_id", "name"], name: "index_discord_roles_on_guild_id_and_name", unique: true
+    t.index ["guild_id"], name: "index_discord_roles_on_guild_id"
   end
 
   create_table "events", force: :cascade do |t|
-    t.bigint "guild_id", null: false
     t.bigint "created_by_id", null: false
+    t.bigint "discord_guild_id", null: false
+    t.bigint "discord_role_id"
     t.citext "name", null: false
     t.string "slug", null: false
     t.string "format"
@@ -82,7 +102,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
-    t.index ["guild_id"], name: "index_events_on_guild_id"
+    t.index ["discord_guild_id"], name: "index_events_on_discord_guild_id"
+    t.index ["discord_role_id"], name: "index_events_on_discord_role_id"
     t.index ["name"], name: "index_events_on_name", unique: true
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.check_constraint "registration_opens_at IS NULL OR registration_closes_at IS NULL OR registration_opens_at <= registration_closes_at"
@@ -123,7 +144,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_142452) do
 
   add_foreign_key "api_keys", "users"
   add_foreign_key "deck_lists", "registrations"
-  add_foreign_key "events", "discord_guilds", column: "guild_id"
+  add_foreign_key "events", "discord_guilds"
   add_foreign_key "events", "users", column: "created_by_id"
   add_foreign_key "message_links", "discord_messages", column: "message_id"
   add_foreign_key "registrations", "events"

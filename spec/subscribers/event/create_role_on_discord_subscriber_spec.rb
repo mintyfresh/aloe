@@ -19,7 +19,7 @@ RSpec.describe Event::CreateRoleOnDiscordSubscriber, type: :subscriber do
 
     let!(:create_guild_role) do
       stub_discord_create_guild_role(
-        guild_id:    event.guild.guild_id,
+        guild_id:    event.discord_guild.id,
         name:        event.name,
         permissions: '0',
         mentionable: true
