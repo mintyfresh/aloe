@@ -3,15 +3,15 @@
 class Registration
   class AssignRoleSubscriber < ApplicationSubscriber
     subscribes_to Registration::CreateMessage, Registration::ResumeMessage do |message|
-      message.registration.event.discord_role.present? # must have a role to assign
+      message.registration.event.discord_role_id.present? # must have a role to assign
     end
 
     # @return [void]
     def perform
       Discord.client.add_guild_member_role(
-        guild_id: event.discord_guild.id,
+        guild_id: event.organization.discord_guild_id,
         user_id:  user.discord_id,
-        role_id:  event.discord_role.id
+        role_id:  event.discord_role_id
       )
     end
 

@@ -21,7 +21,7 @@ RSpec.describe Event::AnnounceOnDiscordSubscriber, type: :subscriber do
     let!(:create_message) do
       template = Discord::Templates::EventAnnouncement.render(event:, host: Rails.application.default_host)
 
-      stub_discord_create_message(channel_id: event.discord_guild.event_channel_id, **template) do |_, response|
+      stub_discord_create_message(channel_id: event.announcement_channel_id, **template) do |_, response|
         response[:body][:id] = message_id
       end
     end
@@ -31,16 +31,8 @@ RSpec.describe Event::AnnounceOnDiscordSubscriber, type: :subscriber do
       expect(create_message).to have_been_requested
     end
 
-    it 'marks a record of the message in the database', :aggregate_failures do
-      expect { perform }.to change { event.discord_guild.messages.count }.by(1)
-      expect(event.discord_guild.messages.last).to have_attributes(
-        id: message_id, channel_id: event.discord_guild.event_channel_id
-      )
-    end
-
-    it 'associates the message with the event' do
-      perform
-      expect(event.announcement_message).to eq(event.discord_guild.messages.last)
+    it 'links the message to the event', :aggregate_failures do
+      expect { perform }.to change { event.reload.announcement_message_id }.to be_present
     end
   end
 end

@@ -16,22 +16,19 @@ module Discord
     update_message:           7
   }.freeze
 
+  REQUIRED_BOT_PERMISSIONS = 268_437_520
+
   # @return [Discord::Client]
   def self.client
     @client ||= Client.new
   end
 
-  # @param guild [Guild]
-  # @param attributes [Hash]
-  # @return [Message]
-  def self.send_message(guild:, **)
-    message = client.create_message(channel_id: guild.event_channel_id, **)
-
-    guild.messages.create!(
-      channel_id: message['channel_id'],
-      message_id: message['id'],
-      content:    message['content']
-    )
+  # @return [String]
+  def self.bot_oauth_url
+    'https://discord.com/api/oauth2/authorize' \
+      "?client_id=#{ENV.require('DISCORD_CLIENT_ID')}" \
+      "&permissions=#{REQUIRED_BOT_PERMISSIONS}" \
+      '&scope=bot%20applications.commands'
   end
 
   # @return [String]

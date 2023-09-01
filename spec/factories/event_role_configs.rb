@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: event_role_configs
@@ -22,11 +24,8 @@
 #
 FactoryBot.define do
   factory :event_role_config do
-    event { nil }
-    name { "MyString" }
-    permissions { "MyString" }
-    colour { 1 }
-    hoist { false }
-    mentionable { false }
+    event
+
+    name { Faker::Lorem.word }
   end
 end

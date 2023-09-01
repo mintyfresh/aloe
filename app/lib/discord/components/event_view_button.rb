@@ -16,7 +16,7 @@ module Discord
       style :link
 
       url do
-        Rails.application.routes.url_helpers.event_url(@event, host: @host)
+        Rails.application.routes.url_helpers.event_url(@event.organization, @event, host: @host)
       end
     end
   end

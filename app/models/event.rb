@@ -5,6 +5,7 @@
 # Table name: events
 #
 #  id                       :bigint           not null, primary key
+#  organization_id          :bigint           not null
 #  created_by_id            :bigint           not null
 #  name                     :citext           not null
 #  slug                     :string           not null
@@ -23,13 +24,15 @@
 #
 # Indexes
 #
-#  index_events_on_created_by_id  (created_by_id)
-#  index_events_on_name           (name) UNIQUE
-#  index_events_on_slug           (slug) UNIQUE
+#  index_events_on_created_by_id             (created_by_id)
+#  index_events_on_organization_id           (organization_id)
+#  index_events_on_organization_id_and_name  (organization_id,name) UNIQUE
+#  index_events_on_organization_id_and_slug  (organization_id,slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (organization_id => organizations.id)
 #
 class Event < ApplicationRecord
   include Discord::Linkable
@@ -45,6 +48,7 @@ class Event < ApplicationRecord
     custom
   ].freeze
 
+  belongs_to :organization, inverse_of: :events
   belongs_to :created_by, class_name: 'User', inverse_of: :created_events
 
   has_many :registrations, dependent: :destroy, inverse_of: :event
@@ -52,13 +56,13 @@ class Event < ApplicationRecord
   has_one :role_config, class_name: 'EventRoleConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :role_config, allow_destroy: true, reject_if: :all_blank, update_only: true
 
-  has_linked_discord_record :guild, required: true
-  has_linked_discord_record :role
-  has_linked_discord_record :announcement, :message
+  has_linked_discord_record :announcement_channel, required: true
+  has_linked_discord_record :announcement_message
+  has_linked_discord_record :discord_role
 
   # Apply errors from both unique indices to the name attribute.
-  has_unique_attribute :name, index: 'index_events_on_name'
-  has_unique_attribute :name, index: 'index_events_on_slug'
+  has_unique_attribute :name, index: 'index_events_on_organization_id_and_name'
+  has_unique_attribute :name, index: 'index_events_on_organization_id_and_slug'
 
   has_time_zone
   has_date_time_in_time_zone :registration_opens_at, :registration_closes_at, :starts_at, :ends_at
@@ -69,6 +73,10 @@ class Event < ApplicationRecord
   validates :location, length: { maximum: 250 }
   validates :enforce_guild_membership, inclusion: { in: [true, false] }
   validates :starts_at, :ends_at, presence: true
+
+  validate if: -> { organization.present? } do
+    errors.add(:organization, :must_have_discord_guild) if organization.discord_guild_id.blank?
+  end
 
   with_options allow_nil: true do
     validates :starts_at, comparison: { less_than: :ends_at }, if: :ends_at

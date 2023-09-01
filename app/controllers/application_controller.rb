@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   if Rails.env.development?
-    after_action :verify_policy_scoped, only: :index
+    after_action :verify_policy_scoped, only: :index # rubocop:disable Rails/LexicallyScopedActionFilter
     after_action :verify_authorized
   end
 

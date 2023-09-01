@@ -28,6 +28,9 @@ class User < ApplicationRecord
 
   has_many :registrations, dependent: :destroy, inverse_of: :user
 
+  has_many :organization_memberships, dependent: :destroy, inverse_of: :user
+  has_many :organizations, through: :organization_memberships
+
   validates :discord_id, presence: true
   validates :name, presence: true, length: { minimum: 3, maximum: 30 }
   validates :role, presence: true
@@ -44,5 +47,11 @@ class User < ApplicationRecord
   rescue ActiveRecord::RecordNotUnique => error
     retry if error.message.include?('index_users_on_discord_id')
     raise error
+  end
+
+  # @param organization [Organization]
+  # @return [Boolean]
+  def member_of?(organization)
+    organizations.include?(organization)
   end
 end

@@ -4,7 +4,7 @@ class RegistrationPolicy < ApplicationPolicy
   alias registration record
 
   def show?
-    admin? || registration.user == current_user
+    global_admin? || registration.user == current_user
   end
 
   def upsert?
@@ -21,7 +21,7 @@ class RegistrationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if admin?
+      if global_admin?
         scope.all
       elsif signed_in?
         scope.where(user: current_user)

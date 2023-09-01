@@ -5,6 +5,7 @@
 # Table name: events
 #
 #  id                       :bigint           not null, primary key
+#  organization_id          :bigint           not null
 #  created_by_id            :bigint           not null
 #  name                     :citext           not null
 #  slug                     :string           not null
@@ -23,19 +24,22 @@
 #
 # Indexes
 #
-#  index_events_on_created_by_id  (created_by_id)
-#  index_events_on_name           (name) UNIQUE
-#  index_events_on_slug           (slug) UNIQUE
+#  index_events_on_created_by_id             (created_by_id)
+#  index_events_on_organization_id           (organization_id)
+#  index_events_on_organization_id_and_name  (organization_id,name) UNIQUE
+#  index_events_on_organization_id_and_slug  (organization_id,slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (organization_id => organizations.id)
 #
 FactoryBot.define do
   factory :event do
+    organization { create(:organization, :with_discord_guild) }
     created_by factory: :user
-    discord_guild
 
+    announcement_channel_id { Faker::Number.number(digits: 18) }
     name { Faker::Book.title }
     format { Event::SUPPORTED_FORMATS.sample }
     description { Faker::Lorem.paragraph }
@@ -45,8 +49,12 @@ FactoryBot.define do
     starts_at { Faker::Time.between(from: 1.year.ago, to: 1.year.from_now) }
     ends_at { starts_at + 2.days }
 
+    trait :with_announcement_message do
+      announcement_message_id { Faker::Number.number(digits: 18) }
+    end
+
     trait :with_discord_role do
-      discord_role { association(:discord_role, guild: discord_guild) }
+      discord_role_id { Faker::Number.number(digits: 18) }
     end
 
     trait :with_registrations do

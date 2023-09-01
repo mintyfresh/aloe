@@ -5,6 +5,7 @@
 # Table name: events
 #
 #  id                       :bigint           not null, primary key
+#  organization_id          :bigint           not null
 #  created_by_id            :bigint           not null
 #  name                     :citext           not null
 #  slug                     :string           not null
@@ -23,13 +24,15 @@
 #
 # Indexes
 #
-#  index_events_on_created_by_id  (created_by_id)
-#  index_events_on_name           (name) UNIQUE
-#  index_events_on_slug           (slug) UNIQUE
+#  index_events_on_created_by_id             (created_by_id)
+#  index_events_on_organization_id           (organization_id)
+#  index_events_on_organization_id_and_name  (organization_id,name) UNIQUE
+#  index_events_on_organization_id_and_slug  (organization_id,slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (organization_id => organizations.id)
 #
 require 'rails_helper'
 
@@ -40,8 +43,13 @@ RSpec.describe Event do
     expect(event).to be_valid
   end
 
-  it 'is invalid without a discord guild' do
-    event.discord_guild = nil
+  it 'is invalid without an organization' do
+    event.organization = nil
+    expect(event).to be_invalid
+  end
+
+  it 'is invalid in an organization without a discord guild' do
+    event.organization = create(:organization)
     expect(event).to be_invalid
   end
 

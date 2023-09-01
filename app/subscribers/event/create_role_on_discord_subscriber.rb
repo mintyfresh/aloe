@@ -6,13 +6,12 @@ class Event
 
     # @return [void]
     def perform
-      guild_id   = event.discord_guild.id
+      guild_id   = event.organization.discord_guild_id
       attributes = event_role_config.discord_role_attributes
 
       role = Discord.client.create_guild_role(guild_id:, **attributes)
-      role = Discord::Role.upsert_from_discord(guild_id, role)
 
-      event.update!(discord_role: role)
+      event.update!(discord_role_id: role['id'])
     end
 
     # @!method event_role_config

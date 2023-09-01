@@ -2,18 +2,18 @@
 
 class UserPolicy < ApplicationPolicy
   def index?
-    admin?
+    global_admin?
   end
 
   def show?
-    admin? || record == current_user
+    global_admin? || record == current_user
   end
 
   class Scope < Scope
     def resolve
-      if admin?
+      if global_admin?
         scope.all
-      elsif user?
+      elsif signed_in?
         scope.where(id: current_user)
       else
         scope.none

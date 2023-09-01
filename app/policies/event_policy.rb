@@ -12,15 +12,15 @@ class EventPolicy < ApplicationPolicy
   end
 
   def create?
-    admin?
+    global_admin? || member_of?(event.organization)
   end
 
   def update?
-    admin?
+    global_admin? || member_of?(event.organization)
   end
 
   def destroy?
-    admin?
+    global_admin? || member_of?(event.organization)
   end
 
   def permitted_attributes
@@ -30,7 +30,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    permitted_attributes + %i[discord_guild_id]
+    permitted_attributes + %i[announcement_channel_id]
   end
 
   class Scope < Scope

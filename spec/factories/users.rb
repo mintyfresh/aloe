@@ -19,5 +19,13 @@ FactoryBot.define do
   factory :user do
     discord_id { Faker::Number.number(digits: 18) }
     name { Faker::Internet.user_name }
+
+    trait :with_organizations do
+      transient do
+        organizations_count { 1 }
+      end
+
+      organizations { association_list(:organization, organizations_count) }
+    end
   end
 end

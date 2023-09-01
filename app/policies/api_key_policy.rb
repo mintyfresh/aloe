@@ -4,27 +4,27 @@ class ApiKeyPolicy < ApplicationPolicy
   alias api_key record
 
   def index?
-    admin?
+    global_admin?
   end
 
   def show?
-    admin? && api_key.user == current_user
+    global_admin? && api_key.user == current_user
   end
 
   def create?
-    admin?
+    global_admin?
   end
 
   def update?
-    admin? && api_key.active? && api_key.user == current_user
+    global_admin? && api_key.active? && api_key.user == current_user
   end
 
   def rotate?
-    admin? && api_key.active? && api_key.user == current_user
+    global_admin? && api_key.active? && api_key.user == current_user
   end
 
   def revoke?
-    admin? && api_key.active? && api_key.user == current_user
+    global_admin? && api_key.active? && api_key.user == current_user
   end
 
   def permitted_attributes
@@ -33,7 +33,7 @@ class ApiKeyPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if admin?
+      if global_admin?
         scope.where(user: current_user)
       else
         scope.none

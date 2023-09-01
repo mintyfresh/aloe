@@ -30,6 +30,12 @@ module Discord
       @client.get("#{PATH}/guilds/#{guild_id}").body
     end
 
+    # @param guild_id [Integer]
+    # @return [Array<Hash>]
+    benchmark def channels(guild_id:)
+      @client.get("#{PATH}/guilds/#{guild_id}/channels").body
+    end
+
     # @param attributes [Hash]
     # @return [Hash]
     benchmark def create_global_command(**attributes)

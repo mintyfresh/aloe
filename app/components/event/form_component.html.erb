@@ -4,10 +4,13 @@
     <%= form.text_field(:name, class: 'form-control', required: true) %>
   </div>
   <div class="mb-3">
-    <%= form.label(:discord_guild_id, class: 'form-label') %>*
-    <%= form.collection_select(:discord_guild_id, guilds, :id, :label, {}, class: 'form-select', disabled: guilds.none?, readonly: @event.persisted?, required: true) %>
-    <span class="form-text">This is the Discord server to which the event and its notifications will be posted.</span>
-    <% if guilds.none? %>
+    <%= form.label(:announcement_channel_id, class: 'form-label') %>*
+    <%= form.select(:announcement_channel_id, channels, {}, class: 'form-select', disabled: channels.none?, readonly: @event.persisted?, required: true) %>
+    <span class="form-text">
+      This is the Discord server to which the event and its notifications will be posted.
+      This channel cannot be changed after the event is created.
+    </span>
+    <% if channels.none? %>
       <div class="alert alert-warning mt-1">
         <strong class="alert-heading">No servers found.</strong>
         Aloe must be installed into a Discord server before events can be created.<br/>
@@ -18,7 +21,7 @@
   </div>
   <div class="mb-3">
     <div class="form-check form-switch">
-      <%= form.check_box(:enforce_guild_membership, class: 'form-check-input', role: 'switch', disabled: guilds.none?) %>
+      <%= form.check_box(:enforce_guild_membership, class: 'form-check-input', role: 'switch', disabled: channels.none?) %>
       <%= form.label(:enforce_guild_membership, class: 'form-check-label') %>
     </div>
     <span class="form-text">

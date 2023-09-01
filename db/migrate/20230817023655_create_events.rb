@@ -5,9 +5,10 @@ class CreateEvents < ActiveRecord::Migration[7.0]
     enable_extension 'citext'
 
     create_table :events do |t|
+      t.belongs_to :organization, null: false, foreign_key: false
       t.belongs_to :created_by, null: false, foreign_key: { to_table: :users }
-      t.citext     :name, null: false, index: { unique: true }
-      t.string     :slug, null: false, index: { unique: true }
+      t.citext     :name, null: false
+      t.string     :slug, null: false
       t.string     :format
       t.string     :description
       t.string     :location
@@ -19,6 +20,9 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.boolean    :enforce_guild_membership, null: false, default: true
       t.integer    :registrations_count, null: false, default: 0
       t.timestamps
+
+      t.index %i[organization_id name], unique: true
+      t.index %i[organization_id slug], unique: true
 
       t.check_constraint <<-SQL.squish
         "registration_opens_at" IS NULL OR "registration_closes_at" IS NULL OR

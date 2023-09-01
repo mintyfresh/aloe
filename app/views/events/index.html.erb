@@ -3,12 +3,12 @@
     <h1>Events</h1>
   </div>
   <div class="col-auto my-auto">
-    <%= link_to('Create an Event', new_event_path, class: 'btn btn-primary') if policy(Event).create? %>
+    <%= link_to('Create an Event', new_event_path(@organization), class: 'btn btn-primary') if policy(@organization.events.build).create? %>
   </div>
 </div>
 <% @events.each do |event| %>
   <div id="event-<%= event.id %>">
-    <%= link_to(event.name, event) %>
+    <%= link_to(event.name, [event.organization, event]) %>
   </div>
 <% end %>
 <% if @events.none? %>

@@ -1,0 +1,7 @@
+<h1>Manage <%= @organization.name %></h1>
+<%= button_to('Install Bot', generate_install_token_path(@organization), class: 'btn btn-primary', method: :post) %>
+<% if (token = flash[:token]).present? %>
+  <div class="alert alert-info" role="alert">
+    Token: <%= token %>
+  </div>
+<% end %>

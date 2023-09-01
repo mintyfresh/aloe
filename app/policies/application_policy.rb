@@ -10,13 +10,19 @@ class ApplicationPolicy
     end
 
     # @return [Boolean]
-    def user?
-      signed_in? && current_user.user?
+    def guest?
+      current_user.nil?
     end
 
     # @return [Boolean]
-    def admin?
+    def global_admin?
       signed_in? && current_user.admin?
+    end
+
+    # @param organization [Organization]
+    # @return [Boolean]
+    def member_of?(organization)
+      signed_in? && current_user.member_of?(organization)
     end
   end
 

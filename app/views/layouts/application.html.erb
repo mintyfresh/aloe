@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <%= render NavbarComponent.new(current_user:) %>
+    <%= render NavbarComponent.new(current_user:, current_organization: @organization) %>
     <div class="container">
       <%= yield %>
     </div>

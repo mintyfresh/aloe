@@ -14,9 +14,14 @@ Rails.application.routes.draw do
     post :revoke, on: :member
   end
 
-  resources :events do
-    post '/registration', to: 'registrations#upsert', as: :registration
-    delete '/registration', to: 'registrations#destroy'
+  scope '/:organization_id' do
+    get '/manage', to: 'organizations#manage', as: :manage_organization
+    post '/install_token', to: 'organizations#generate_install_token', as: :generate_install_token
+
+    resources :events do
+      post '/registration', to: 'registrations#upsert', as: :registration
+      delete '/registration', to: 'registrations#destroy'
+    end
   end
 
   namespace :api do
