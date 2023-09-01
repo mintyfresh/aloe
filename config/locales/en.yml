@@ -5,9 +5,10 @@ en:
       api_key: API key
     attributes:
       event:
-        enforce_guild_membership: Enforce server membership
-        discord_guild: Discord server
-        discord_guild_id: Discord server
+        enforce_guild_membership: Require server membership
+        announcement_channel_id: Discord channel
+      event_role_config:
+        hoist: Display role in members list on sidebar
       registration/deck_list:
         pony_head_url: Pony Head URL
     errors:

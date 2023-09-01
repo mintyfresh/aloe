@@ -21,10 +21,15 @@ class Event
       end
     end
 
-    # @return [Integer]
+    # @return [Integer, nil]
     def default_channel
       # Default to whichever channel was used last
       @event.organization.events.last&.announcement_channel_id
+    end
+
+    # @return [Hash{String => String}]
+    def currencies
+      @currencies ||= Money::Currency.table.transform_keys(&:upcase).transform_values { |value| value[:iso_code] }
     end
   end
 end

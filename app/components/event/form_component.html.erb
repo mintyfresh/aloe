@@ -7,12 +7,12 @@
     <%= form.label(:announcement_channel_id, class: 'form-label') %>*
     <%= form.select(:announcement_channel_id, channels, {}, class: 'form-select', disabled: channels.none?, readonly: @event.persisted?, required: true) %>
     <span class="form-text">
-      This is the Discord server to which the event and its notifications will be posted.
+      This is the channel to which the event and its notifications will be posted.
       This channel cannot be changed after the event is created.
     </span>
     <% if channels.none? %>
       <div class="alert alert-warning mt-1">
-        <strong class="alert-heading">No servers found.</strong>
+        <strong class="alert-heading">No channels found.</strong>
         Aloe must be installed into a Discord server before events can be created.<br/>
         Once you have added Aloe to your server, an administrator must run <code>/install</code> to complete the installation.<br/>
         This will also configure the channel to which events and notifications will be posted.
@@ -70,12 +70,81 @@
       </span>
     </div>
   </div>
-  <%= form.fields_for(:role_config) do |role_config_form| %>
-    <div class="mb-3">
-      <%= role_config_form.label(:name, class: 'form-label') %>
-      <%= role_config_form.text_field(:name, class: 'form-control') %>
+  <div class="accordion mb-3">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_role_config" aria-expanded="false" aria-controls="#event_role_config">
+          Discord Role Configuration
+        </button>
+      </h2>
+      <div id="event_role_config" class="accordion-collapse collapse>">
+        <div class="accordion-body">
+          <%= form.fields_for(:role_config) do |role_config_form| %>
+            <div class="row mb-3">
+              <div class="col">
+                <%= role_config_form.label(:name, class: 'form-label') %>
+                <%= role_config_form.text_field(:name, class: 'form-control') %>
+              </div>
+              <div class="col-auto">
+                <%= role_config_form.label(:colour, class: 'form-label') %>
+                <%= role_config_form.color_field(:colour, class: 'form-control form-control-color') %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <%= role_config_form.check_box(:hoist, class: 'form-check-input', role: 'switch') %>
+                <%= role_config_form.label(:hoist, class: 'form-check-label') %>
+              </div>
+              <span class="form-text">
+                Discord internally refers to this toggle as "hoist".
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <%= role_config_form.check_box(:mentionable, class: 'form-check-input', role: 'switch') %>
+                <%= role_config_form.label(:mentionable, class: 'form-check-label') %>
+              </div>
+              <span class="form-text">
+                When enabled, users will be able to @mention this role in chat.
+              </span>
+            </div>
+            <div class="mb-3">
+              <%= role_config_form.label(:permissions, class: 'form-label') %>
+              <%= role_config_form.text_field(:permissions, class: 'form-control') %>
+              <div class="form-text">
+                <strong class="text-danger">Beware!</strong> Unless you really know what you are doing, you should leave the permissions field well enough alone.
+                Here be dragons and other dangerous things. Madness and suffering and pain await those who venture to carelessly put values into here.
+                Consider yourself warned.
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_price" aria-expanded="false" aria-controls="#event_price">
+          Event Pricing
+        </button>
+      </h2>
+      <div id="event_price" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <%= form.fields_for(:price) do |price_form| %>
+            <div class="row mb-3">
+              <div class="col">
+                <%= price_form.label(:amount, class: 'form-label') %>
+                <%= price_form.number_field(:amount, class: 'form-control') %>
+              </div>
+              <div class="col">
+                <%= price_form.label(:currency, class: 'form-label') %>
+                <%= price_form.select(:currency, currencies, { include_blank: true }, class: 'form-select') %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="mb-3">
     <%= form.submit(class: 'btn btn-primary') %>
   </div>

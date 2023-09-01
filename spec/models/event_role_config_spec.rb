@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: event_role_configs
@@ -22,6 +24,25 @@
 #
 require 'rails_helper'
 
-RSpec.describe EventRoleConfig, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.describe EventRoleConfig do
+  subject(:role_config) { build(:event_role_config) }
+
+  it 'has a valid factory' do
+    expect(role_config).to be_valid
+  end
+
+  it 'is invalid without an event' do
+    role_config.event = nil
+    expect(role_config).to be_invalid
+  end
+
+  it 'is invalid without a name' do
+    role_config.name = nil
+    expect(role_config).to be_invalid
+  end
+
+  it 'is invalid when the name is too long' do
+    role_config.name = 'a' * 101
+    expect(role_config).to be_invalid
+  end
 end

@@ -25,7 +25,14 @@
 class EventRoleConfig < ApplicationRecord
   include Moonfire::Model
 
-  DISCORD_ROLE_ATTRIBUTES = %w[name permissions colour hoist mentionable].freeze
+  # Maps Discord attribute names (key) to model attribute names (value).
+  DISCORD_ATTRIBUTE_MAPPING = {
+    name:        :name,
+    color:       :colour,
+    hoist:       :hoist,
+    mentionable: :mentionable,
+    permissions: :permissions
+  }.freeze
 
   belongs_to :event, inverse_of: :role_config
 
@@ -39,6 +46,6 @@ class EventRoleConfig < ApplicationRecord
 
   # @return [Hash{String => Object}]
   def discord_role_attributes
-    attributes.slice(*DISCORD_ROLE_ATTRIBUTES)
+    DISCORD_ATTRIBUTE_MAPPING.transform_values { |attribute| public_send(attribute) }
   end
 end

@@ -29,6 +29,7 @@ class EventsController < ApplicationController
     authorize @event
 
     @event.build_role_config
+    @event.build_price
   end
 
   # POST /:organization_id/events
