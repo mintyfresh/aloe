@@ -23,13 +23,8 @@ module Api
         api_v1_user_url(event.created_by_id, host: options[:host])
       end
 
-      field :guild do |event, options|
-        api_v1_guild_url(event.discord_guild_id, host: options[:host])
-      end
-
       view :detail do
         association :created_by, blueprint: UserBlueprint
-        association :guild, blueprint: GuildBlueprint
 
         association :registrations, blueprint: RegistrationBlueprint, view: :in_event do |event, options|
           registrations = event.registrations.preload(:deck_list, :user)
