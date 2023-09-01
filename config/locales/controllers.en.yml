@@ -1,0 +1,17 @@
+---
+en:
+  unauthorized: You must be logged in to do that.
+  forbidden: You do not have permission to do that.
+  auth:
+    sign_in_with_discord:
+      already_signed_in: You are already signed in.
+    sign_out:
+      success: You have been signed out.
+  events:
+    create:
+      success: Successfully created event %{name}.
+    update:
+      success: Successfully updated event %{name}.
+    destroy:
+      success: Successfully deleted event %{name}.
+      failure: 'Unable to delete event %{name}: %{errors}'

@@ -3,11 +3,11 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
-  rescue_from Pundit::NotAuthorizedError do |error|
+  rescue_from Pundit::NotAuthorizedError do
     if current_user.nil?
-      redirect_to sign_in_with_discord_path(origin: request.fullpath), alert: 'You must be logged in to do that.'
+      redirect_to sign_in_with_discord_path(origin: request.fullpath), alert: t('unauthorized')
     else
-      redirect_to root_path, alert: error.message
+      redirect_to root_path, alert: t('forbidden')
     end
   end
 
@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
       @current_user = nil
       session.delete(:user_id)
     else
-      raise ArgumentError, "invalid current_user: #{current_user.inspect}"
+      raise ArgumentError, "Invalid current user: #{current_user.inspect}. (Expected User or nil)"
     end
   end
 

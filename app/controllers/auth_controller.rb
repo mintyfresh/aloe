@@ -5,15 +5,13 @@ class AuthController < ApplicationController
 
   # GET /sign_in_with_discord
   def sign_in_with_discord
-    current_user.nil? or redirect_to root_path, alert: 'You are already logged in.'
+    current_user.nil? or redirect_to root_path, alert: t('.already_signed_in')
   end
 
   # POST /sign_out
   def sign_out
     self.current_user = nil
-    flash.notice = 'Successfully logged out.'
-
-    redirect_to root_path
+    redirect_to root_path, notice: t('.success')
   end
 
   # GET /auth/discord/callback
