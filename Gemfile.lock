@@ -124,6 +124,8 @@ GEM
       sassc (~> 2.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    has_more_secure_token (0.1.1)
+      activerecord
     has_unique_attribute (0.1.4)
     hashdiff (1.0.1)
     hashie (5.0.0)
@@ -359,6 +361,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   font-awesome-sass
+  has_more_secure_token (~> 0.1.1)
   has_unique_attribute (~> 0.1.4)
   importmap-rails (~> 1.2)
   mini_racer

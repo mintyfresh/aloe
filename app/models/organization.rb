@@ -33,7 +33,7 @@ class Organization < ApplicationRecord
 
   has_linked_discord_record :discord_guild
 
-  has_secure_token :install_token, length: 32
+  has_secure_token :install_token, length: 32, find_by_digest: 'sha256'
 
   # Apply uniqueness errors from the slug to the name
   has_unique_attribute :name, index: 'index_organizations_on_name'
@@ -42,12 +42,4 @@ class Organization < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }, exclusion: { in: DISALLOWED_NAMES }
 
   sluggifies :name
-
-  def self.find_by_install_token(install_token)
-    token_type = ActiveRecord::Type.lookup(:binary)
-    token_hash = bind_param('install_token', OpenSSL::Digest.digest('sha256', install_token), type: token_type)
-    token_arel = Arel::Nodes::NamedFunction.new('digest', [arel_table[:install_token], Arel::Nodes.build_quoted('sha256')])
-
-    find_by(token_arel.eq(token_hash))
-  end
 end
