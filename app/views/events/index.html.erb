@@ -8,7 +8,7 @@
 </div>
 <% @events.each do |event| %>
   <div id="event-<%= event.id %>">
-    <%= link_to(event.name, [event.organization, event]) %>
+    <%= link_to(event.name, event_path(event.organization, event)) %>
   </div>
 <% end %>
 <% if @events.none? %>

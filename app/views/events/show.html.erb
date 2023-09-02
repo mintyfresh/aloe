@@ -10,7 +10,7 @@
 <% end %>
 
 <% if current_user %>
-  <%= form_with(model: @registration, method: :post, url: [@event, :registration]) do |form| %>
+  <%= form_with(model: @registration, method: :post, url: event_registration_path(@organization, @event)) do |form| %>
     <div class="mb-3">
       <%= form.submit(@registration.new_record? ? 'Register' : 'Update deck list', class: 'btn btn-primary') %>
     </div>

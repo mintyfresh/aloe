@@ -29,7 +29,7 @@ class EventsController < ApplicationController
     authorize @event
 
     @event.build_role_config
-    @event.build_price
+    @event.build_price_config
     @event.build_check_in_config
   end
 
