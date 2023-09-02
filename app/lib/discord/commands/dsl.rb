@@ -68,15 +68,44 @@ module Discord
         end
       end
 
+      # @return [Array<Hash>]
+      def options
+        @options ||= []
+      end
+
+      # @param name [String, Symbol]
+      # @param description [String, nil]
+      # @param attributes [Hash]
+      # @return [void]
+      def option(name, description = nil, **)
+        options << { type: 3, description:, **, name: name.to_s }
+      end
+
       # @return [Hash]
       def command_attributes
         {
-          name: command_name, description:,
+          name: command_name, description:, options: options.presence,
           dm_permission:, default_member_permissions:
         }.compact
       end
 
+      # @return [Array<String>]
+      def i18n_path
+        @i18n_path ||= name.underscore.tr('/', '.').freeze
+      end
+
     protected
+
+      # @param key [String, Symbol]
+      def translate(key, **)
+        if key.to_s.start_with?('.')
+          I18n.t(key, scope: i18n_path, **)
+        else
+          I18n.t(key, **)
+        end
+      end
+
+      alias t translate
 
       # @param data [Hash]
       # @return [Hash]

@@ -5,8 +5,6 @@ module Discord
     module Install
       extend DSL
 
-      I18N_PATH = 'discord.commands.install'
-
       command_name 'install'
 
       description 'Install Aloe, the MLPCCG Discord bot into this server. ' \
@@ -15,13 +13,11 @@ module Discord
       dm_permission false
       default_member_permissions '1000'
 
+      option :token, 'Organization install token', required: true, min_length: 32, max_length: 32
+
       # @return [void]
       def self.install
-        Discord.client.create_global_command(
-          **command_attributes,
-          options: [{ type: 3, name: 'token', description: 'Organization install token',
-                      required: true, min_length: 32, max_length: 32 }]
-        )
+        Discord.client.create_global_command(**command_attributes)
       end
 
       # @param interaction [Hash]
@@ -30,7 +26,7 @@ module Discord
         token = extract_token(interaction)
 
         if (organization = ::Organization.find_by_install_token(token)).nil?
-          return respond_with_message(content: I18n.t('invalid_token', scope: I18N_PATH))
+          return respond_with_message(content: t('.invalid_token'))
         end
 
         if organization.update(discord_guild_id: interaction['guild_id'])
@@ -38,9 +34,9 @@ module Discord
           # to prevent it from being reused elsewhere by accident
           organization.regenerate_install_token
 
-          content = I18n.t('success', scope: I18N_PATH)
+          content = t('.success')
         else
-          content = I18n.t('failure', scope: I18N_PATH, errors: organization.errors.full_messages.join(', '))
+          content = t('.failure', errors: organization.errors.full_messages.join(', '))
         end
 
         respond_with_message(content:)
