@@ -50,6 +50,13 @@ Metrics/BlockLength:
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
 
+Metrics/MethodLength:
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+    - method_call
+
 Naming/PredicateName:
   ForbiddenPrefixes:
     - is_

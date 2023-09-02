@@ -78,15 +78,14 @@ class Event < ApplicationRecord
   validates :description, length: { maximum: 5000 }
   validates :location, length: { maximum: 250 }
   validates :enforce_guild_membership, inclusion: { in: [true, false] }
-  validates :starts_at, :ends_at, presence: true
+  validates :starts_at, presence: true
+  validates :ends_at, presence: true
+
+  validates :starts_at, datetime: { before: :ends_at }
+  validates :registration_opens_at, datetime: { before: :registration_closes_at }, allow_nil: true
 
   validate if: -> { organization.present? } do
-    errors.add(:organization, :must_have_discord_guild) if organization.discord_guild_id.blank?
-  end
-
-  with_options allow_nil: true do
-    validates :starts_at, comparison: { less_than: :ends_at }, if: :ends_at
-    validates :registration_opens_at, comparison: { less_than: :registration_closes_at }, if: :registration_closes_at
+    errors.add(:base, :must_have_discord_guild, name: organization.name) if organization.discord_guild_id.blank?
   end
 
   sluggifies :name

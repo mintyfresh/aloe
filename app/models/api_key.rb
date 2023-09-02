@@ -27,7 +27,7 @@
 class ApiKey < ApplicationRecord
   belongs_to :user, inverse_of: :api_keys
 
-  has_secure_token length: 40
+  has_secure_token length: 40, find_by_digest: 'sha256'
 
   validates :name, presence: true, length: { maximum: 50 }
 
@@ -39,18 +39,6 @@ class ApiKey < ApplicationRecord
   # @return [ApiKey, nil]
   def self.authenticate(token)
     active.find_by_token(token)
-  end
-
-  # @param token [String, nil]
-  # @return [ApiKey, nil]
-  def self.find_by_token(token)
-    return if token.blank? || token.length != 40
-
-    token_type = ActiveRecord::Type.lookup(:binary)
-    token_hash = bind_param('token', OpenSSL::Digest::SHA256.digest(token), type: token_type)
-    token_arel = Arel::Nodes::NamedFunction.new('digest', [arel_table[:token], Arel::Nodes.build_quoted('sha256')])
-
-    find_by(token_arel.eq(token_hash))
   end
 
   # @return [Boolean]

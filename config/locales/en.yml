@@ -17,14 +17,10 @@ en:
 
     errors:
       models:
-        discord/guild:
-          unable_to_install: Sorry, something went wrong and Aloe couldn't process your command.
-  discord:
-    commands:
-      install:
-        created: Aloe was successfully installed in this server.
-        failure: "Errors: %{errors}"
-        updated: Aloe will now post events to this channel.
+        event:
+          attributes:
+            base:
+              must_have_discord_guild: '%{name} must have a connected Discord server to create events'
 
   errors:
     messages:

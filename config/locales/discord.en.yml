@@ -1,0 +1,8 @@
+---
+en:
+  discord:
+    commands:
+      install:
+        invalid_token: The install token provided is invalid or expired. Please contact an Aloe administrator for assistance.
+        success: Aloe was successfully installed in this server.
+        failure: 'Failed to install Aloe to this server: %{errors}'
