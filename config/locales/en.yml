@@ -7,10 +7,14 @@ en:
       event:
         enforce_guild_membership: Require server membership
         announcement_channel_id: Discord channel
+      event_check_in_config:
+        start_offset_hours: Check-in lead time
+        duration_hours: Check-in duration
       event_role_config:
         hoist: Display role in members list on sidebar
       registration/deck_list:
         pony_head_url: Pony Head URL
+
     errors:
       models:
         discord/guild:

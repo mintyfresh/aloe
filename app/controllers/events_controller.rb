@@ -30,6 +30,7 @@ class EventsController < ApplicationController
 
     @event.build_role_config
     @event.build_price
+    @event.build_check_in_config
   end
 
   # POST /:organization_id/events

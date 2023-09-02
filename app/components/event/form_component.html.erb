@@ -124,7 +124,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_price" aria-expanded="false" aria-controls="#event_price">
-          Event Pricing
+          Event Pricing Configuration
         </button>
       </h2>
       <div id="event_price" class="accordion-collapse collapse">
@@ -138,6 +138,59 @@
               <div class="col">
                 <%= price_form.label(:currency, class: 'form-label') %>
                 <%= price_form.select(:currency, currencies, { include_blank: true }, class: 'form-select') %>
+              </div>
+            </div>
+            <div class="alert alert-info" role="alert">
+              <strong class="alert-heading">Square Integration: Coming Soon</strong>
+              <p class="mb-0">
+                Aloe will soon support integration with Square to allow you to collect payments for your events.
+                You'll be able to connect your Square account to Aloe and fully integrate with Square's order management system.
+                Contract your organization's support lead for more information.
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_check_in_config" aria-expanded="false" aria-controls="#event_check_in_config">
+          Event Check-in Configuration
+        </button>
+      </h2>
+      <div id="event_check_in_config" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <p class="text-secondary">
+            <%= icon('fa-solid', 'circle-info') %>
+            The check-in feature will require registered participants to confirm attendance prior to the start of the event.
+            Aloe will post a notification to the announcement channel (and ping all participants) when check-in opens.
+            Members of <%= @event.organization.name %> will be able to view who has checked in and who has not,
+            and will be able to manually check-in participants who have not done so themselves (even after check-in closes).
+            <br/>
+            Adding configuration here will enable the event check-in feature.
+            Leave these fields blank to disable participant check-in.
+          </p>
+          <%= form.fields_for(:check_in_config) do |check_in_config_form| %>
+            <div class="row mb-3">
+              <div class="col">
+                <%= check_in_config_form.label(:start_offset_hours, class: 'form-label') %>
+                <div class="input-group">
+                  <%= check_in_config_form.number_field(:start_offset_hours, class: 'form-control') %>
+                  <span class="input-group-text">hours</span>
+                </div>
+                <span class="form-text">
+                  e.g. "6" will open check-in 6 hours before the event starts.
+                </span>
+              </div>
+              <div class="col">
+                <%= check_in_config_form.label(:duration_hours, class: 'form-label') %>
+                <div class="input-group">
+                  <%= check_in_config_form.number_field(:duration_hours, class: 'form-control') %>
+                  <span class="input-group-text">hours</span>
+                </div>
+                <span class="form-text">
+                  e.g. "2" will close check-in 2 hours after it opens. Defaults to the start of the event.
+                </span>
               </div>
             </div>
           <% end %>

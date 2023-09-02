@@ -9,6 +9,7 @@ ruby '3.2.2'
 gem 'blueprinter'
 gem 'bootsnap', require: false
 gem 'bootstrap'
+gem 'colorize'
 gem 'ed25519'
 gem 'font-awesome-sass'
 gem 'has_unique_attribute', '~> 0.1.4'

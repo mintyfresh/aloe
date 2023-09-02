@@ -91,6 +91,7 @@ GEM
       popper_js (>= 2.11.8, < 3)
       sassc-rails (>= 2.0.0)
     builder (3.2.4)
+    colorize (0.8.1)
     concurrent-ruby (1.2.2)
     crack (0.4.5)
       rexml
@@ -351,6 +352,7 @@ DEPENDENCIES
   blueprinter
   bootsnap
   bootstrap
+  colorize
   debug
   dotenv-rails
   ed25519

@@ -27,7 +27,8 @@ class EventPolicy < ApplicationPolicy
     [:name, :format, :description, :location, :time_zone, :starts_at, :ends_at,
      :registration_opens_at, :registration_closes_at, :enforce_guild_membership,
      { role_config_attributes: %i[_destroy id name permissions colour hoist mentionable] },
-     { price_attributes: %i[_destroy id amount currency] }]
+     { price_config_attributes: %i[_destroy id amount currency] },
+     { check_in_config_attributes: %i[_destroy id start_offset_hours duration_hours] }]
   end
 
   def permitted_attributes_for_create

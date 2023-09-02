@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_01_061849) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_02_044257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -54,14 +54,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_01_061849) do
     t.index ["linkable_type", "linkable_id"], name: "index_discord_record_links_on_linkable"
   end
 
-  create_table "event_prices", force: :cascade do |t|
+  create_table "event_check_in_configs", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.integer "start_offset_hours", null: false
+    t.integer "duration_hours"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_check_in_configs_on_event_id", unique: true
+    t.check_constraint "duration_hours IS NULL OR duration_hours > 0"
+    t.check_constraint "start_offset_hours > 0"
+  end
+
+  create_table "event_price_configs", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.string "currency", null: false
     t.integer "amount_cents", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_prices_on_event_id", unique: true
-    t.check_constraint "amount_cents >= 0"
+    t.index ["event_id"], name: "index_event_price_configs_on_event_id", unique: true
+    t.check_constraint "amount_cents > 0"
   end
 
   create_table "event_role_configs", force: :cascade do |t|
@@ -145,7 +156,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_01_061849) do
 
   add_foreign_key "api_keys", "users"
   add_foreign_key "deck_lists", "registrations"
-  add_foreign_key "event_prices", "events"
+  add_foreign_key "event_check_in_configs", "events"
+  add_foreign_key "event_price_configs", "events"
   add_foreign_key "event_role_configs", "events"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "users", column: "created_by_id"

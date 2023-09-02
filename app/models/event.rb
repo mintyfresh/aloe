@@ -56,8 +56,11 @@ class Event < ApplicationRecord
   has_one :role_config, class_name: 'EventRoleConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :role_config, allow_destroy: true, reject_if: :all_blank, update_only: true
 
-  has_one :price, class_name: 'EventPrice', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :price, allow_destroy: true, reject_if: :all_blank, update_only: true
+  has_one :price_config, class_name: 'EventPriceConfig', dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :price_config, allow_destroy: true, reject_if: :all_blank, update_only: true
+
+  has_one :check_in_config, class_name: 'EventCheckInConfig', dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :check_in_config, allow_destroy: true, reject_if: :all_blank, update_only: true
 
   has_linked_discord_record :announcement_channel, required: true
   has_linked_discord_record :announcement_message
