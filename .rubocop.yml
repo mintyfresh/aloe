@@ -101,5 +101,8 @@ RSpec/SortMetadata:
 Style/AccessorGrouping:
   EnforcedStyle: separated
 
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
+
 Style/Documentation:
   Enabled: false
