@@ -2,11 +2,21 @@
 en:
   unauthorized: You must be logged in to do that.
   forbidden: You do not have permission to do that.
+  api_keys:
+    create:
+      success: Successfully created API key %{name}.
+    update:
+      success: Successfully updated API key %{name}.
+    revoke:
+      success: Successfully revoked API key %{name}.
   auth:
     sign_in_with_discord:
       already_signed_in: You are already signed in.
     sign_out:
       success: You have been signed out.
+    discord:
+      success: You have been signed in with Discord.
+      failure: 'Unable to sign in with Discord: %{errors}'
   events:
     create:
       success: Successfully created event %{name}.

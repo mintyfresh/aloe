@@ -38,7 +38,7 @@ class User < ApplicationRecord
   # @param discord_id [Integer]
   # @param name [String]
   # @return [User]
-  def self.create_from_discord!(discord_id:, name:)
+  def self.upsert_from_discord!(discord_id:, name:)
     transaction(requires_new: true) do
       user = find_or_initialize_by(discord_id:)
       user.name = name

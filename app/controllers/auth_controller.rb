@@ -16,12 +16,10 @@ class AuthController < ApplicationController
 
   # GET /auth/discord/callback
   def discord
-    self.current_user = User.create_from_discord!(discord_id: auth_hash.uid, name: auth_hash.info.name)
-    return_path = request.env['omniauth.origin'] || root_path
-
-    redirect_to return_path, notice: 'Successfully logged in.'
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-    redirect_to root_path, alert: 'Something went wrong.'
+    self.current_user = upsert_user_from_discord!
+    redirect_to return_path, notice: t('.success')
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => error
+    redirect_to root_path, alert: t('.failure', error: error.record.errors.full_messages.to_sentence)
   end
 
 private
@@ -29,5 +27,15 @@ private
   # @return [OmniAuth::AuthHash]
   def auth_hash
     request.env['omniauth.auth']
+  end
+
+  # @return [User]
+  def upsert_user_from_discord!
+    User.upsert_from_discord!(discord_id: auth_hash.uid, name: auth_hash.info.name)
+  end
+
+  # @return [String]
+  def return_path
+    request.env['omniauth.origin'] || root_path
   end
 end

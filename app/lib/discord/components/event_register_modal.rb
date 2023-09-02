@@ -8,7 +8,7 @@ module Discord
       # @param attributes [Hash{String => String}]
       on_modal_submit do |interaction, event_id, attributes|
         event = ::Event.find(event_id)
-        user  = ::User.create_from_discord!(discord_id: interaction.dig('member', 'user', 'id'),
+        user  = ::User.upsert_from_discord!(discord_id: interaction.dig('member', 'user', 'id'),
                                             name:       interaction.dig('member', 'user', 'username'))
 
         registration = event.registrations.create_or_find_by!(user:)

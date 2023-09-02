@@ -23,7 +23,7 @@ class ApiKeysController < ApplicationController
 
     if @api_key.save
       flash["api_key_#{@api_key.id}"] = @api_key.token
-      redirect_to api_keys_path, status: :created, notice: 'API key created successfully.'
+      redirect_to api_keys_path, notice: t('.success', name: @api_key.name)
     else
       render :new
     end
@@ -37,7 +37,7 @@ class ApiKeysController < ApplicationController
   # PATCH /api_keys/:id
   def update
     if authorize(@api_key).update(permitted_attributes(@api_key))
-      redirect_to api_keys_path, notice: 'API key updated successfully.'
+      redirect_to api_keys_path, notice: t('.success', name: @api_key.name)
     else
       render :edit
     end
@@ -47,13 +47,13 @@ class ApiKeysController < ApplicationController
   def rotate
     authorize(@api_key).regenerate_token
     flash["api_key_#{params[:id]}"] = @api_key.token
-    redirect_to api_keys_path, notice: 'API key rotated successfully.'
+    redirect_to api_keys_path
   end
 
   # POST /api_keys/:id/revoke
   def revoke
     authorize(@api_key).revoked!
-    redirect_to api_keys_path, notice: 'API key revoked successfully.'
+    redirect_to api_keys_path, notice: t('.success', name: @api_key.name)
   end
 
 private
