@@ -28,3 +28,9 @@ en:
       invalid_path: has an invalid path (%{path} is supported)
       invalid_scheme: has an invalid scheme (%{scheme} is supported)
       invalid_uri: is not a valid URI
+
+      must_be_after: must be after %{after}
+      must_be_before: must be before %{before}
+      must_be_at_or_after: must be at or after %{at_or_after}
+      must_be_at_or_before: must be at or before %{at_or_before}
+      must_be_at: must be at %{at}

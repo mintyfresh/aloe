@@ -22,9 +22,10 @@ class DatetimeValidator < ActiveModel::EachValidator
     value = type.cast(value)
 
     COMPARISONS.each do |name, comparator|
-      if (boundary = extract_boundary(record, name))
-        comparator.call(value, type.cast(boundary)) or record.errors.add(attribute, :"must_be_#{name}", time: boundary)
-      end
+      next if (boundary = extract_boundary(record, name)).nil?
+
+      comparator.call(value, boundary) or
+        record.errors.add(attribute, :"must_be_#{name}", name => extract_boundary_label(record, name, attribute))
     end
   end
 
@@ -46,14 +47,26 @@ private
   def extract_boundary(record, name)
     case options[name]
     in String | Symbol => locator
-      record.public_send(locator)
+      type.cast(record.public_send(locator))
     in Proc => block
-      record.instance_exec(&block)
+      type.cast(record.instance_exec(&block))
     in nil
       nil
     else
       raise TypeError, "Invalid value for #{name.inspect}: #{options[name].inspect}. " \
                        '(Must be a String, Symbol, or Proc.)'
+    end
+  end
+
+  # @param record [ActiveRecord::Base, ActiveModel::Model]
+  # @param name [Symbol]
+  # @return [String]
+  def extract_boundary_label(record, name, attribute)
+    case name
+    in String | Symbol
+      record.class.human_attribute_name(attribute)
+    else
+      extract_boundary(record, name).to_s
     end
   end
 end
