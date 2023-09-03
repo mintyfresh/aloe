@@ -52,3 +52,11 @@ group :test do
   gem 'rspec-rails'
   gem 'webmock'
 end
+
+group :production do
+  gem 'active_scheduler'
+  gem 'redis'
+  gem 'resque'
+  gem 'resque-heroku-signals'
+  gem 'resque-scheduler'
+end

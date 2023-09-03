@@ -7,6 +7,14 @@ class ApplicationRecord < ActiveRecord::Base
 
   primary_abstract_class
 
+  # @param attribute [String, Symbol]
+  # @param value [Object]
+  # @param type [ActiveRecord::Type::Value]
+  # @return [Arel::Nodes::BindParam]
+  def self.bind_param(attribute, value, type: ActiveRecord::Type::Value.new)
+    Arel::Nodes::BindParam.new(ActiveRecord::Relation::QueryAttribute.new(attribute.to_s, value, type))
+  end
+
   # @param attribute [Symbol]
   # @param error [Symbol]
   # @param options [Hash]

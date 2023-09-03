@@ -1,0 +1,3 @@
+Event::StartCheckInJob:
+  description: Checks for events that are starting check-in and posts notifications.
+  every: 1m

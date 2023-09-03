@@ -34,4 +34,9 @@ Rails.application.routes.draw do
       post '/discord', to: 'discord#callback'
     end
   end
+
+  if defined?(Resque)
+    require 'resque/server'
+    mount Resque::Server.new, at: '/admin/resque'
+  end
 end
