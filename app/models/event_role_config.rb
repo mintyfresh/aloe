@@ -48,4 +48,8 @@ class EventRoleConfig < ApplicationRecord
   def discord_role_attributes
     DISCORD_ATTRIBUTE_MAPPING.transform_values { |attribute| public_send(attribute) }
   end
+
+  def colour
+    super&.to_s(16)
+  end
 end

@@ -1,11 +1,11 @@
 <%= form_with(model: @event) do |form| %>
+  <%= form.group do %>
+    <%= form.label(:name) %>*
+    <%= form.text_field(:name, required: true) %>
+  <% end %>
   <div class="mb-3">
-    <%= form.label(:name, class: 'form-label') %>*
-    <%= form.text_field(:name, class: 'form-control', required: true) %>
-  </div>
-  <div class="mb-3">
-    <%= form.label(:announcement_channel_id, class: 'form-label') %>*
-    <%= form.select(:announcement_channel_id, channels, {}, class: 'form-select', disabled: channels.none?, readonly: @event.persisted?, required: true) %>
+    <%= form.label(:announcement_channel_id) %>*
+    <%= form.select(:announcement_channel_id, channels, {}, disabled: channels.none?, readonly: @event.persisted?, required: true) %>
     <span class="form-text">
       This is the channel to which the event and its notifications will be posted.
       This channel cannot be changed after the event is created.
@@ -20,51 +20,48 @@
     <% end %>
   </div>
   <div class="mb-3">
-    <div class="form-check form-switch">
-      <%= form.check_box(:enforce_guild_membership, class: 'form-check-input', role: 'switch', disabled: channels.none?) %>
-      <%= form.label(:enforce_guild_membership, class: 'form-check-label') %>
-    </div>
-    <span class="form-text">
+    <%= form.switch(:enforce_guild_membership, disabled: channels.none?, aria: { describedby: form.help_text_id(:enforce_guild_membership) }) %>
+    <%= form.help_text(:enforce_guild_membership) do %>
       When enabled, only members of the Discord server are be able to register for the event.
-    </span>
+    <% end %>
   </div>
   <div class="mb-3">
-    <%= form.label(:format, class: 'form-label') %>
-    <%= form.select(:format, Event::SUPPORTED_FORMATS, {}, class: 'form-select') %>
+    <%= form.label(:format) %>
+    <%= form.select(:format, Event::SUPPORTED_FORMATS) %>
   </div>
   <div class="mb-3">
-    <%= form.label(:description, class: 'form-label') %>
-    <%= form.text_area(:description, class: 'form-control') %>
+    <%= form.label(:description) %>
+    <%= form.text_area(:description) %>
   </div>
   <div class="mb-3">
-    <%= form.label(:location, class: 'form-label') %>
-    <%= form.text_field(:location, class: 'form-control', placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year} or Online") %>
+    <%= form.label(:location) %>
+    <%= form.text_field(:location, placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year} or Online") %>
   </div>
   <div class="mb-3">
-    <%= form.label(:time_zone, class: 'form-label') %>*
-    <%= form.time_zone_select(:time_zone, nil, {}, class: 'form-select', required: true) %>
+    <%= form.label(:time_zone) %>*
+    <%= form.time_zone_select(:time_zone, nil, {}, required: true) %>
   </div>
   <div class="row mb-3">
     <div class="col">
-      <%= form.label(:starts_at, class: 'form-label') %>*
-      <%= form.datetime_field(:starts_at, class: 'form-control', required: true) %>
+      <%= form.label(:starts_at) %>*
+      <%= form.datetime_field(:starts_at, required: true) %>
     </div>
     <div class="col">
-      <%= form.label(:ends_at, class: 'form-label') %>*
-      <%= form.datetime_field(:ends_at, class: 'form-control', required: true) %>
+      <%= form.label(:ends_at) %>*
+      <%= form.datetime_field(:ends_at, required: true) %>
     </div>
   </div>
   <div class="row mb-3">
     <div class="col">
-      <%= form.label(:registration_opens_at, class: 'form-label') %>
-      <%= form.datetime_field(:registration_opens_at, class: 'form-control') %>
+      <%= form.label(:registration_opens_at) %>
+      <%= form.datetime_field(:registration_opens_at) %>
       <span class="form-text">
         If not specified, registration will open as soon as the event is created.
       </span>
     </div>
     <div class="col">
-      <%= form.label(:registration_closes_at, class: 'form-label') %>
-      <%= form.datetime_field(:registration_closes_at, class: 'form-control') %>
+      <%= form.label(:registration_closes_at) %>
+      <%= form.datetime_field(:registration_closes_at) %>
       <span class="form-text">
         If not specified, registration will close once the event starts.
       </span>
@@ -82,35 +79,29 @@
           <%= form.fields_for(:role_config) do |role_config_form| %>
             <div class="row mb-3">
               <div class="col">
-                <%= role_config_form.label(:name, class: 'form-label') %>
-                <%= role_config_form.text_field(:name, class: 'form-control') %>
+                <%= role_config_form.label(:name) %>
+                <%= role_config_form.text_field(:name) %>
               </div>
               <div class="col-auto">
-                <%= role_config_form.label(:colour, class: 'form-label') %>
-                <%= role_config_form.color_field(:colour, class: 'form-control form-control-color') %>
+                <%= role_config_form.label(:colour) %>
+                <%= role_config_form.colour_field(:colour) %>
               </div>
             </div>
             <div class="mb-3">
-              <div class="form-check form-switch">
-                <%= role_config_form.check_box(:hoist, class: 'form-check-input', role: 'switch') %>
-                <%= role_config_form.label(:hoist, class: 'form-check-label') %>
-              </div>
+              <%= role_config_form.switch(:hoist) %>
               <span class="form-text">
                 Discord internally refers to this toggle as "hoist".
               </span>
             </div>
             <div class="mb-3">
-              <div class="form-check form-switch">
-                <%= role_config_form.check_box(:mentionable, class: 'form-check-input', role: 'switch') %>
-                <%= role_config_form.label(:mentionable, class: 'form-check-label') %>
-              </div>
+              <%= role_config_form.switch(:mentionable) %>
               <span class="form-text">
                 When enabled, users will be able to @mention this role in chat.
               </span>
             </div>
             <div class="mb-3">
-              <%= role_config_form.label(:permissions, class: 'form-label') %>
-              <%= role_config_form.text_field(:permissions, class: 'form-control') %>
+              <%= role_config_form.label(:permissions) %>
+              <%= role_config_form.text_field(:permissions) %>
               <div class="form-text">
                 <strong class="text-danger">Beware!</strong> Unless you really know what you are doing, you should leave the permissions field well enough alone.
                 Here be dragons and other dangerous things. Madness and suffering and pain await those who venture to carelessly put values into here.
@@ -132,12 +123,12 @@
           <%= form.fields_for(:price) do |price_form| %>
             <div class="row mb-3">
               <div class="col">
-                <%= price_form.label(:amount, class: 'form-label') %>
-                <%= price_form.number_field(:amount, class: 'form-control') %>
+                <%= price_form.label(:amount) %>
+                <%= price_form.number_field(:amount) %>
               </div>
               <div class="col">
-                <%= price_form.label(:currency, class: 'form-label') %>
-                <%= price_form.select(:currency, currencies, { include_blank: true }, class: 'form-select') %>
+                <%= price_form.label(:currency) %>
+                <%= price_form.select(:currency, currencies, { include_blank: true }) %>
               </div>
             </div>
             <div class="alert alert-info" role="alert">
@@ -173,9 +164,9 @@
           <%= form.fields_for(:check_in_config) do |check_in_config_form| %>
             <div class="row mb-3">
               <div class="col">
-                <%= check_in_config_form.label(:start_offset_hours, class: 'form-label') %>
+                <%= check_in_config_form.label(:start_offset_hours) %>
                 <div class="input-group">
-                  <%= check_in_config_form.number_field(:start_offset_hours, class: 'form-control') %>
+                  <%= check_in_config_form.number_field(:start_offset_hours) %>
                   <span class="input-group-text">hours</span>
                 </div>
                 <span class="form-text">
@@ -183,9 +174,9 @@
                 </span>
               </div>
               <div class="col">
-                <%= check_in_config_form.label(:duration_hours, class: 'form-label') %>
+                <%= check_in_config_form.label(:duration_hours) %>
                 <div class="input-group">
-                  <%= check_in_config_form.number_field(:duration_hours, class: 'form-control') %>
+                  <%= check_in_config_form.number_field(:duration_hours) %>
                   <span class="input-group-text">hours</span>
                 </div>
                 <span class="form-text">
@@ -199,6 +190,6 @@
     </div>
   </div>
   <div class="mb-3">
-    <%= form.submit(class: 'btn btn-primary') %>
+    <%= form.submit %>
   </div>
 <% end %>

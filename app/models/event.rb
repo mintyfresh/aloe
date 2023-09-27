@@ -54,7 +54,7 @@ class Event < ApplicationRecord
   has_many :registrations, dependent: :destroy, inverse_of: :event
 
   has_one :role_config, class_name: 'EventRoleConfig', dependent: :destroy, inverse_of: :event
-  accepts_nested_attributes_for :role_config, allow_destroy: true, reject_if: :all_blank, update_only: true
+  accepts_nested_attributes_for :role_config, allow_destroy: true, reject_if: :reject_role_config?, update_only: true
 
   has_one :price_config, class_name: 'EventPriceConfig', dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :price_config, allow_destroy: true, reject_if: :all_blank, update_only: true
@@ -117,5 +117,14 @@ class Event < ApplicationRecord
   # @return [Boolean]
   def finished?
     Time.current > ends_at
+  end
+
+private
+
+  # @param attributes [Hash]
+  # @return [Boolean]
+  # @see https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for
+  def reject_role_config?(attributes)
+    attributes['name'].blank?
   end
 end

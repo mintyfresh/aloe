@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def form_with(**options, &)
+    super(builder: ApplicationFormBuilder, **options, &)
+  end
+
   # Given an options Hash for a Rails view helper, apply the given CSS classes.
   #
   # @param options [Hash]

@@ -27,10 +27,7 @@ class EventsController < ApplicationController
   def new
     @event = @organization.events.build
     authorize @event
-
-    @event.build_role_config
-    @event.build_price_config
-    @event.build_check_in_config
+    prepare_nested_event_records @event
   end
 
   # POST /:organization_id/events
@@ -42,6 +39,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to @event, notice: t('.success', name: @event.name)
     else
+      prepare_nested_event_records @event
       render :new, status: :unprocessable_entity
     end
   end
@@ -81,5 +79,13 @@ private
 
   def set_event
     @event = Event.find_by!(slug: params[:id])
+  end
+
+  # @param event [Event]
+  # @return [void]
+  def prepare_nested_event_records(event)
+    event.build_role_config if event.role_config.blank?
+    event.build_price_config if event.price_config.blank?
+    event.build_check_in_config if event.check_in_config.blank?
   end
 end
