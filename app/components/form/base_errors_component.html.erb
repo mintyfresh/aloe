@@ -1,4 +1,4 @@
-<%= tag.div(**@html_options, role: 'alert') do %>
+<%= render Alert::Component.new(variant: 'danger') do %>
   <% @errors.each do |error| %>
     <%= error %><br/>
   <% end %>

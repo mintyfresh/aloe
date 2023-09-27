@@ -5,6 +5,10 @@ module ApplicationHelper
     super(builder: ApplicationFormBuilder, **options, &)
   end
 
+  def alert(**, &)
+    render(Alert::Component.new(**), &)
+  end
+
   # Given an options Hash for a Rails view helper, apply the given CSS classes.
   #
   # @param options [Hash]

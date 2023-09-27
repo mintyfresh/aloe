@@ -13,6 +13,16 @@
   <body>
     <%= render NavbarComponent.new(current_user:, current_organization: @organization) %>
     <div class="container">
+      <% if (alert = flash.alert).present? %>
+        <%= alert(variant: 'danger', class: 'mt-4', dismissible: true) do %>
+          <%= alert %>
+        <% end %>
+      <% end %>
+      <% if (notice = flash.notice).present? %>
+        <%= alert(variant: 'success', class: 'mt-4', dismissible: true) do %>
+          <%= notice %>
+        <% end %>
+      <% end %>
       <%= yield %>
     </div>
   </body>

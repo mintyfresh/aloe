@@ -3,13 +3,12 @@
 module Form
   class BaseErrorsComponent < ApplicationComponent
     # @param errors [Array<ActiveModel::Error>]
-    # @param variant [String]
     # @param html_options [Hash]
-    def initialize(errors:, variant: 'danger', **html_options)
+    def initialize(errors:, **html_options)
       super()
 
       @errors       = errors
-      @html_options = apply_css_class(html_options, 'alert', "alert-#{variant}")
+      @html_options = html_options
     end
 
     # @return [Boolean]
