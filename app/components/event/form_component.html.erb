@@ -45,26 +45,28 @@
     <div class="col">
       <%= form.label(:starts_at) %>*
       <%= form.datetime_field(:starts_at, required: true) %>
+      <%= form.field_errors(:starts_at) %>
     </div>
     <div class="col">
       <%= form.label(:ends_at) %>*
       <%= form.datetime_field(:ends_at, required: true) %>
+      <%= form.field_errors(:ends_at) %>
     </div>
   </div>
   <div class="row mb-3">
     <div class="col">
       <%= form.label(:registration_opens_at) %>
       <%= form.datetime_field(:registration_opens_at) %>
-      <span class="form-text">
+      <%= form.help_text(:registration_opens_at) do %>
         If not specified, registration will open as soon as the event is created.
-      </span>
+      <% end %>
     </div>
     <div class="col">
       <%= form.label(:registration_closes_at) %>
       <%= form.datetime_field(:registration_closes_at) %>
-      <span class="form-text">
+      <%= form.help_text(:registration_closes_at) do %>
         If not specified, registration will close once the event starts.
-      </span>
+      <% end %>
     </div>
   </div>
   <div class="accordion mb-3">
@@ -189,7 +191,8 @@
       </div>
     </div>
   </div>
-  <div class="mb-3">
+  <%= form.base_errors %>
+  <%= form.group do %>
     <%= form.submit %>
-  </div>
+  <% end %>
 <% end %>

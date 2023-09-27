@@ -11,7 +11,7 @@ module ApplicationHelper
   # @param classes [Array<String>]
   # @return [Hash]
   def apply_css_class(options, *classes)
-    options.merge(class: [*classes, *options[:class]])
+    options.merge(class: [*options[:class], *classes])
   end
 
   # Constructs a bootstrap nav-link elements with the given label and path.

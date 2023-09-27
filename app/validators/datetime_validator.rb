@@ -25,7 +25,7 @@ class DatetimeValidator < ActiveModel::EachValidator
       next if (boundary = extract_boundary(record, name)).nil?
 
       comparator.call(value, boundary) or
-        record.errors.add(attribute, :"must_be_#{name}", name => extract_boundary_label(record, name, attribute))
+        record.errors.add(attribute, :"must_be_#{name}", name => extract_boundary_label(record, name))
     end
   end
 
@@ -61,10 +61,10 @@ private
   # @param record [ActiveRecord::Base, ActiveModel::Model]
   # @param name [Symbol]
   # @return [String]
-  def extract_boundary_label(record, name, attribute)
+  def extract_boundary_label(record, name)
     case name
     in String | Symbol
-      record.class.human_attribute_name(attribute)
+      record.class.human_attribute_name(options[name]).downcase
     else
       extract_boundary(record, name).to_s
     end

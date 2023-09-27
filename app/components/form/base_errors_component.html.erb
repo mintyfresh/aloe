@@ -1,0 +1,5 @@
+<%= tag.div(**@html_options, role: 'alert') do %>
+  <% @errors.each do |error| %>
+    <%= error %><br/>
+  <% end %>
+<% end %>

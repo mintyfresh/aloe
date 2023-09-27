@@ -20,7 +20,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def text_field(method, options = {})
     options = apply_css_class(options, 'form-control')
-    options = apply_css_class(options, 'is-invalid') if field_invalid?(method)
 
     super(method, options)
   end
@@ -30,7 +29,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def text_area(method, options = {})
     options = apply_css_class(options, 'form-control')
-    options = apply_css_class(options, 'is-invalid') if field_invalid?(method)
 
     super(method, options)
   end
@@ -40,7 +38,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def number_field(method, options = {})
     options = apply_css_class(options, 'form-control')
-    options = apply_css_class(options, 'is-invalid') if field_invalid?(method)
 
     super(method, options)
   end
@@ -50,7 +47,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def date_field(method, options = {})
     options = apply_css_class(options, 'form-control')
-    options = apply_css_class(options, 'is-invalid') if field_invalid?(method)
 
     super(method, options)
   end
@@ -60,7 +56,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def datetime_field(method, options = {})
     options = apply_css_class(options, 'form-control')
-    options = apply_css_class(options, 'is-invalid') if field_invalid?(method)
 
     super(method, options)
   end
@@ -70,7 +65,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def color_field(method, options = {})
     options = apply_css_class(options, 'form-control', 'form-control-color')
-    options = apply_css_class(options, 'is-invalid') if field_invalid?(method)
 
     super(method, options)
   end
@@ -84,7 +78,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def select(method, choices = nil, options = {}, html_options = {}, &)
     html_options = apply_css_class(html_options, 'form-select')
-    html_options = apply_css_class(html_options, 'is-invalid') if field_invalid?(method)
 
     super(method, choices, options, html_options, &)
   end
@@ -96,7 +89,6 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   # @return [String]
   def time_zone_select(method, priority_zones = nil, options = {}, html_options = {})
     html_options = apply_css_class(html_options, 'form-select')
-    html_options = apply_css_class(html_options, 'is-invalid') if field_invalid?(method)
 
     super(method, priority_zones, options, html_options)
   end
@@ -154,6 +146,19 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
     super(value, apply_css_class(options, 'btn', 'btn-primary'))
   end
 
+  # @param html_options [Hash]
+  # @return [String]
+  def base_errors(**)
+    @template.render(Form::BaseErrorsComponent.new(errors: @object.errors[:base], **))
+  end
+
+  # @param method [Symbol]
+  # @param html_options [Hash]
+  # @return [String]
+  def field_errors(method, **)
+    @template.render(Form::FieldErrorsComponent.new(errors: @object.errors[method], **))
+  end
+
 private
 
   # @param options [Hash]
@@ -161,22 +166,5 @@ private
   # @return [Hash]
   def apply_css_class(options, *css_classes)
     options.merge(class: [*options[:class], *css_classes].uniq.join(' '))
-  end
-
-  # @param method [Symbol]
-  # @return [Boolean]
-  def field_invalid?(method)
-    return false unless object.respond_to?(:errors)
-    return true if object.errors.where(method).any?
-
-    method = method.to_s
-
-    if method.ends_with?('_ids')
-      method = method.chomp('_ids').pluralize
-    elsif method.ends_with?('_id')
-      method = method.chomp('_id')
-    end
-
-    object.errors.where(method).any?
   end
 end
