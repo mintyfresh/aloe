@@ -3,6 +3,9 @@ en:
   activerecord:
     models:
       api_key: API key
+      event_check_in_config: Event Check-in Configuration
+      event_price_config: Event Pricing Configuration
+      event_role_config: Discord Role Configuration
     attributes:
       event:
         enforce_guild_membership: Require server membership

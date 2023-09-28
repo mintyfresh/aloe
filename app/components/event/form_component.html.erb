@@ -10,16 +10,12 @@
     <%= form.select(:announcement_channel_id, channels, {}, disabled: channels.none?, readonly: @event.persisted?, required: true, has_help_text: true) %>
     <%= form.field_errors(:announcement_channel) %>
     <%= form.help_text(:announcement_channel_id) do %>
-      This is the channel to which the event and its notifications will be posted.
-      This channel cannot be changed after the event is created.
+      <%= t('.announcement_channel/help_text') %>
     <% end %>
 
     <% if channels.none? %>
       <%= alert(variant: 'warning', class: 'mt-1') do |alert| %>
-        <strong>No channels found.</strong>
-        Aloe must be installed into a Discord server before events can be created.<br/>
-        Once you have added Aloe to your server, an administrator must run <code>/install</code> to complete the installation.<br/>
-        This will also configure the channel to which events and notifications will be posted.
+        <%= t('.no_channels_found_html') %>
       <% end %>
     <% end %>
   <% end %>
@@ -27,7 +23,7 @@
   <%= form.group do %>
     <%= form.switch(:enforce_guild_membership, disabled: channels.none?, has_help_text: true) %>
     <%= form.help_text(:enforce_guild_membership) do %>
-      When enabled, only members of the Discord server are be able to register for the event.
+      <%= t('.enforce_guild_membership/help_text') %>
     <% end %>
   <% end %>
 
@@ -45,7 +41,7 @@
 
   <%= form.group do %>
     <%= form.label(:location) %>
-    <%= form.text_field(:location, placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year} or Online") %>
+    <%= form.text_field(:location, placeholder: t('.location/placeholder', year: Date.current.next_year.year)) %>
     <%= form.field_errors(:location) %>
   <% end %>
 
@@ -74,7 +70,7 @@
       <%= form.datetime_field(:registration_opens_at, has_help_text: true) %>
       <%= form.field_errors(:registration_opens_at) %>
       <%= form.help_text(:registration_opens_at) do %>
-        If not specified, registration will open as soon as the event is created.
+        <%= t('.registration_opens_at/help_text') %>
       <% end %>
     </div>
     <div class="col">
@@ -82,28 +78,28 @@
       <%= form.datetime_field(:registration_closes_at, has_help_text: true) %>
       <%= form.field_errors(:registration_closes_at) %>
       <%= form.help_text(:registration_closes_at) do %>
-        If not specified, registration will close once the event starts.
+        <%= t('.registration_closes_at/help_text') %>
       <% end %>
     </div>
   <% end %>
 
   <%= accordion(always_open: true, class: 'mb-3') do |accordion| %>
     <% accordion.with_item(expanded: @event.new_record? || @event.role_config&.persisted?) do |item| %>
-      <% item.with_header_content('Discord Role Configuration') %>
+      <% item.with_header_content(EventRoleConfig.model_name.human) %>
       <% item.with_body do %>
         <%= render Event::RoleConfigFieldsComponent.new(form:) %>
       <% end %>
     <% end %>
 
     <% accordion.with_item(expanded: @event.new_record? || @event.price&.persisted?) do |item| %>
-      <% item.with_header_content('Event Pricing Configuration') %>
+      <% item.with_header_content(EventPriceConfig.model_name.human) %>
       <% item.with_body do %>
         <%= render Event::PriceConfigFieldsComponent.new(form:) %>
       <% end %>
     <% end %>
 
     <% accordion.with_item(expanded: @event.new_record? || @event.check_in_config&.persisted?) do |item| %>
-      <% item.with_header_content('Event Check-in Configuration') %>
+      <% item.with_header_content(EventCheckInConfig.model_name.human) %>
       <% item.with_body do %>
         <%= render Event::CheckInConfigFieldsComponent.new(form:) %>
       <% end %>

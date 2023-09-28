@@ -43,6 +43,10 @@ module Aloe
       element.to_html.html_safe # rubocop:disable Rails/OutputSafety
     }
 
+    # Load component translations from `app/components/**/*.yml`.
+    path = config.paths.add 'app/components', glob: '**/*.yml'
+    config.i18n.railties_load_path << path
+
     # Include indices in nested-attribute error keys.
     config.active_record.index_nested_attribute_errors = true
 

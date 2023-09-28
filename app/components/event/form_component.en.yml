@@ -1,0 +1,20 @@
+---
+en:
+  event:
+    form_component:
+      announcement_channel/help_text: |
+        This is the channel to which the event and its notifications will be posted.
+        This channel cannot be changed after the event is created.
+      no_channels_found_html: |
+        <strong>No channels found.</strong>
+        Aloe must be installed into a Discord server before events can be created.<br/>
+        Once you have added Aloe to your server, an administrator must run <code>/install</code> to complete the installation.<br/>
+        This will also configure the channel to which events and notifications will be posted.
+      enforce_guild_membership/help_text: |
+        When enabled, only members of the Discord server are be able to register for the event.
+      location/placeholder: |
+        e.g. Everfree Northwest %{year} or Online
+      registration_opens_at/help_text: |
+        If not specified, registration will open as soon as the event is created.
+      registration_closes_at/help_text: |
+        If not specified, registration will close once the event starts.
