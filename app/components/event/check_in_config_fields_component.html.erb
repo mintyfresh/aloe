@@ -1,0 +1,37 @@
+<%= @form.fields_for(:check_in_config) do |check_in_config_form| %>
+  <p class="text-secondary">
+    <%= icon('fa-solid', 'circle-info') %>
+    The check-in feature will require registered participants to confirm attendance prior to the start of the event.
+    Aloe will post a notification to the announcement channel (and ping all participants) when check-in opens.
+    Members of <%= @form.object.organization.name %> will be able to view who has checked in and who has not,
+    and will be able to manually check-in participants who have not done so themselves (even after check-in closes).
+    <br/>
+    Adding configuration here will enable the event check-in feature.
+    Leave these fields blank to disable participant check-in.
+  </p>
+  <div class="row">
+    <div class="col">
+      <%= check_in_config_form.label(:start_offset_hours) %>
+      <div class="input-group">
+        <%= check_in_config_form.number_field(:start_offset_hours) %>
+        <span class="input-group-text">hours</span>
+      </div>
+      <span class="form-text">
+        e.g. "6" will open check-in 6 hours before the event starts.
+      </span>
+      <%= check_in_config_form.field_errors(:start_offset_hours) %>
+    </div>
+    <div class="col">
+      <%= check_in_config_form.label(:duration_hours) %>
+      <div class="input-group">
+        <%= check_in_config_form.number_field(:duration_hours) %>
+        <span class="input-group-text">hours</span>
+      </div>
+      <span class="form-text">
+        e.g. "2" will close check-in 2 hours after it opens. Defaults to the start of the event.
+      </span>
+      <%= check_in_config_form.field_errors(:duration_hours) %>
+    </div>
+  </div>
+  <%= check_in_config_form.base_errors %>
+<% end %>

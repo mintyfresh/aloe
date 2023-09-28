@@ -5,6 +5,14 @@ module ApplicationHelper
     super(builder: ApplicationFormBuilder, **options, &)
   end
 
+  # (see Accordion::Component#initialize)
+  # @return [String]
+  def accordion(**, &)
+    render(Accordion::Component.new(**), &)
+  end
+
+  # (see Alert::Component#initialize)
+  # @return [String]
   def alert(**, &)
     render(Alert::Component.new(**), &)
   end

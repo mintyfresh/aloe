@@ -1,0 +1,37 @@
+<%= @form.fields_for(:role_config) do |role_config_form| %>
+  <div class="row mb-3">
+    <div class="col">
+      <%= role_config_form.label(:name) %>
+      <%= role_config_form.text_field(:name) %>
+      <%= role_config_form.field_errors(:name) %>
+    </div>
+    <div class="col-auto">
+      <%= role_config_form.label(:colour) %>
+      <%= role_config_form.colour_field(:colour) %>
+      <%= role_config_form.field_errors(:colour) %>
+    </div>
+  </div>
+  <div class="mb-3">
+    <%= role_config_form.switch(:hoist) %>
+    <span class="form-text">
+      Discord internally refers to this toggle as "hoist".
+    </span>
+  </div>
+  <div class="mb-3">
+    <%= role_config_form.switch(:mentionable) %>
+    <span class="form-text">
+      When enabled, users will be able to @mention this role in chat.
+    </span>
+  </div>
+  <div class="mb-0">
+    <%= role_config_form.label(:permissions) %>
+    <%= role_config_form.text_field(:permissions) %>
+    <%= role_config_form.field_errors(:permissions) %>
+    <div class="form-text">
+      <strong class="text-danger">Beware!</strong> Unless you really know what you are doing, you should leave the permissions field well enough alone.
+      Here be dragons and other dangerous things. Madness and suffering and pain await those who venture to carelessly put values into here.
+      Consider yourself warned.
+    </div>
+  </div>
+  <%= role_config_form.base_errors %>
+<% end %>

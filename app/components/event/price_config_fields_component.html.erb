@@ -1,0 +1,23 @@
+<%= @form.fields_for(:price_config) do |price_config_form| %>
+  <div class="row mb-3">
+    <div class="col">
+      <%= price_config_form.label(:amount) %>
+      <%= price_config_form.number_field(:amount) %>
+      <%= price_config_form.field_errors(:amount) %>
+    </div>
+    <div class="col">
+      <%= price_config_form.label(:currency) %>
+      <%= price_config_form.select(:currency, currencies, { include_blank: true }) %>
+      <%= price_config_form.field_errors(:currency) %>
+    </div>
+  </div>
+  <%= alert(variant: 'info', class: 'mb-0') do %>
+    <strong class="alert-heading">Square Integration: Coming Soon</strong>
+    <p class="mb-0">
+      Aloe will soon support integration with Square to allow you to collect payments for your events.
+      You'll be able to connect your Square account to Aloe and fully integrate with Square's order management system.
+      Contract your organization's support lead for more information.
+    </p>
+  <% end %>
+  <%= price_config_form.base_errors %>
+<% end %>

@@ -2,46 +2,60 @@
   <%= form.group do %>
     <%= form.label(:name) %>*
     <%= form.text_field(:name, required: true) %>
+    <%= form.field_errors(:name) %>
   <% end %>
-  <div class="mb-3">
+
+  <%= form.group do %>
     <%= form.label(:announcement_channel_id) %>*
-    <%= form.select(:announcement_channel_id, channels, {}, disabled: channels.none?, readonly: @event.persisted?, required: true) %>
-    <span class="form-text">
+    <%= form.select(:announcement_channel_id, channels, {}, disabled: channels.none?, readonly: @event.persisted?, required: true, has_help_text: true) %>
+    <%= form.field_errors(:announcement_channel) %>
+    <%= form.help_text(:announcement_channel_id) do %>
       This is the channel to which the event and its notifications will be posted.
       This channel cannot be changed after the event is created.
-    </span>
+    <% end %>
+
     <% if channels.none? %>
-      <div class="alert alert-warning mt-1">
-        <strong class="alert-heading">No channels found.</strong>
+      <%= alert(variant: 'warning', class: 'mt-1') do |alert| %>
+        <strong>No channels found.</strong>
         Aloe must be installed into a Discord server before events can be created.<br/>
         Once you have added Aloe to your server, an administrator must run <code>/install</code> to complete the installation.<br/>
         This will also configure the channel to which events and notifications will be posted.
-      </div>
+      <% end %>
     <% end %>
-  </div>
-  <div class="mb-3">
-    <%= form.switch(:enforce_guild_membership, disabled: channels.none?, aria: { describedby: form.help_text_id(:enforce_guild_membership) }) %>
+  <% end %>
+
+  <%= form.group do %>
+    <%= form.switch(:enforce_guild_membership, disabled: channels.none?, has_help_text: true) %>
     <%= form.help_text(:enforce_guild_membership) do %>
       When enabled, only members of the Discord server are be able to register for the event.
     <% end %>
-  </div>
-  <div class="mb-3">
+  <% end %>
+
+  <%= form.group do %>
     <%= form.label(:format) %>
     <%= form.select(:format, Event::SUPPORTED_FORMATS) %>
-  </div>
-  <div class="mb-3">
+    <%= form.field_errors(:format) %>
+  <% end %>
+
+  <%= form.group do %>
     <%= form.label(:description) %>
     <%= form.text_area(:description) %>
-  </div>
-  <div class="mb-3">
+    <%= form.field_errors(:description) %>
+  <% end %>
+
+  <%= form.group do %>
     <%= form.label(:location) %>
     <%= form.text_field(:location, placeholder: "e.g. Everfree Northwest #{Date.current.next_year.year} or Online") %>
-  </div>
-  <div class="mb-3">
+    <%= form.field_errors(:location) %>
+  <% end %>
+
+  <%= form.group do %>
     <%= form.label(:time_zone) %>*
     <%= form.time_zone_select(:time_zone, nil, {}, required: true) %>
-  </div>
-  <div class="row mb-3">
+    <%= form.field_errors(:time_zone) %>
+  <% end %>
+
+  <%= form.group(class: 'row') do %>
     <div class="col">
       <%= form.label(:starts_at) %>*
       <%= form.datetime_field(:starts_at, required: true) %>
@@ -52,146 +66,52 @@
       <%= form.datetime_field(:ends_at, required: true) %>
       <%= form.field_errors(:ends_at) %>
     </div>
-  </div>
-  <div class="row mb-3">
+  <% end %>
+
+  <%= form.group(class: 'row') do %>
     <div class="col">
       <%= form.label(:registration_opens_at) %>
-      <%= form.datetime_field(:registration_opens_at) %>
+      <%= form.datetime_field(:registration_opens_at, has_help_text: true) %>
+      <%= form.field_errors(:registration_opens_at) %>
       <%= form.help_text(:registration_opens_at) do %>
         If not specified, registration will open as soon as the event is created.
       <% end %>
     </div>
     <div class="col">
       <%= form.label(:registration_closes_at) %>
-      <%= form.datetime_field(:registration_closes_at) %>
+      <%= form.datetime_field(:registration_closes_at, has_help_text: true) %>
+      <%= form.field_errors(:registration_closes_at) %>
       <%= form.help_text(:registration_closes_at) do %>
         If not specified, registration will close once the event starts.
       <% end %>
     </div>
-  </div>
-  <div class="accordion mb-3">
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_role_config" aria-expanded="false" aria-controls="#event_role_config">
-          Discord Role Configuration
-        </button>
-      </h2>
-      <div id="event_role_config" class="accordion-collapse collapse>">
-        <div class="accordion-body">
-          <%= form.fields_for(:role_config) do |role_config_form| %>
-            <div class="row mb-3">
-              <div class="col">
-                <%= role_config_form.label(:name) %>
-                <%= role_config_form.text_field(:name) %>
-              </div>
-              <div class="col-auto">
-                <%= role_config_form.label(:colour) %>
-                <%= role_config_form.colour_field(:colour) %>
-              </div>
-            </div>
-            <div class="mb-3">
-              <%= role_config_form.switch(:hoist) %>
-              <span class="form-text">
-                Discord internally refers to this toggle as "hoist".
-              </span>
-            </div>
-            <div class="mb-3">
-              <%= role_config_form.switch(:mentionable) %>
-              <span class="form-text">
-                When enabled, users will be able to @mention this role in chat.
-              </span>
-            </div>
-            <div class="mb-3">
-              <%= role_config_form.label(:permissions) %>
-              <%= role_config_form.text_field(:permissions) %>
-              <div class="form-text">
-                <strong class="text-danger">Beware!</strong> Unless you really know what you are doing, you should leave the permissions field well enough alone.
-                Here be dragons and other dangerous things. Madness and suffering and pain await those who venture to carelessly put values into here.
-                Consider yourself warned.
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_price" aria-expanded="false" aria-controls="#event_price">
-          Event Pricing Configuration
-        </button>
-      </h2>
-      <div id="event_price" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          <%= form.fields_for(:price) do |price_form| %>
-            <div class="row mb-3">
-              <div class="col">
-                <%= price_form.label(:amount) %>
-                <%= price_form.number_field(:amount) %>
-              </div>
-              <div class="col">
-                <%= price_form.label(:currency) %>
-                <%= price_form.select(:currency, currencies, { include_blank: true }) %>
-              </div>
-            </div>
-            <div class="alert alert-info" role="alert">
-              <strong class="alert-heading">Square Integration: Coming Soon</strong>
-              <p class="mb-0">
-                Aloe will soon support integration with Square to allow you to collect payments for your events.
-                You'll be able to connect your Square account to Aloe and fully integrate with Square's order management system.
-                Contract your organization's support lead for more information.
-              </p>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#event_check_in_config" aria-expanded="false" aria-controls="#event_check_in_config">
-          Event Check-in Configuration
-        </button>
-      </h2>
-      <div id="event_check_in_config" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          <p class="text-secondary">
-            <%= icon('fa-solid', 'circle-info') %>
-            The check-in feature will require registered participants to confirm attendance prior to the start of the event.
-            Aloe will post a notification to the announcement channel (and ping all participants) when check-in opens.
-            Members of <%= @event.organization.name %> will be able to view who has checked in and who has not,
-            and will be able to manually check-in participants who have not done so themselves (even after check-in closes).
-            <br/>
-            Adding configuration here will enable the event check-in feature.
-            Leave these fields blank to disable participant check-in.
-          </p>
-          <%= form.fields_for(:check_in_config) do |check_in_config_form| %>
-            <div class="row mb-3">
-              <div class="col">
-                <%= check_in_config_form.label(:start_offset_hours) %>
-                <div class="input-group">
-                  <%= check_in_config_form.number_field(:start_offset_hours) %>
-                  <span class="input-group-text">hours</span>
-                </div>
-                <span class="form-text">
-                  e.g. "6" will open check-in 6 hours before the event starts.
-                </span>
-              </div>
-              <div class="col">
-                <%= check_in_config_form.label(:duration_hours) %>
-                <div class="input-group">
-                  <%= check_in_config_form.number_field(:duration_hours) %>
-                  <span class="input-group-text">hours</span>
-                </div>
-                <span class="form-text">
-                  e.g. "2" will close check-in 2 hours after it opens. Defaults to the start of the event.
-                </span>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <% end %>
+
+  <%= accordion(always_open: true, class: 'mb-3') do |accordion| %>
+    <% accordion.with_item(expanded: @event.new_record? || @event.role_config&.persisted?) do |item| %>
+      <% item.with_header_content('Discord Role Configuration') %>
+      <% item.with_body do %>
+        <%= render Event::RoleConfigFieldsComponent.new(form:) %>
+      <% end %>
+    <% end %>
+
+    <% accordion.with_item(expanded: @event.new_record? || @event.price&.persisted?) do |item| %>
+      <% item.with_header_content('Event Pricing Configuration') %>
+      <% item.with_body do %>
+        <%= render Event::PriceConfigFieldsComponent.new(form:) %>
+      <% end %>
+    <% end %>
+
+    <% accordion.with_item(expanded: @event.new_record? || @event.check_in_config&.persisted?) do |item| %>
+      <% item.with_header_content('Event Check-in Configuration') %>
+      <% item.with_body do %>
+        <%= render Event::CheckInConfigFieldsComponent.new(form:) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
   <%= form.base_errors %>
+
   <%= form.group do %>
     <%= form.submit %>
   <% end %>
