@@ -49,7 +49,18 @@ class EventRoleConfig < ApplicationRecord
     DISCORD_ATTRIBUTE_MAPPING.transform_values { |attribute| public_send(attribute) }
   end
 
-  def colour
-    super&.to_s(16)
+  # @return [String, nil]
+  def colour_as_hex
+    colour && "##{colour.to_s(16).upcase.rjust(6, '0')}"
+  end
+
+  # @param value [Integer, String, nil]
+  # @return [void]
+  def colour=(value)
+    # Accept colour values in the form of a hex string
+    # (HTML input elements return hex strings for colour pickers)
+    value = value[1..].to_i(16) if value.is_a?(String) && value.start_with?('#')
+
+    super(value)
   end
 end

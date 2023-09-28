@@ -45,4 +45,16 @@ RSpec.describe EventRoleConfig do
     role_config.name = 'a' * 101
     expect(role_config).to be_invalid
   end
+
+  it 'accepts colour values as integers', :aggregate_failures do
+    role_config.colour = 123_456
+    expect(role_config.colour).to eq(123_456)
+    expect(role_config.colour_as_hex).to eq('#01E240')
+  end
+
+  it 'accepts colour values as hex strings', :aggregate_failures do
+    role_config.colour = '#A1B2C3'
+    expect(role_config.colour).to eq(0xA1B2C3)
+    expect(role_config.colour_as_hex).to eq('#A1B2C3')
+  end
 end

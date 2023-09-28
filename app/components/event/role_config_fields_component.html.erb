@@ -7,7 +7,7 @@
     </div>
     <div class="col-auto">
       <%= role_config_form.label(:colour) %>
-      <%= role_config_form.colour_field(:colour) %>
+      <%= role_config_form.colour_field(:colour, value: role_config_form.object.colour_as_hex) %>
       <%= role_config_form.field_errors(:colour) %>
     </div>
   </div>
